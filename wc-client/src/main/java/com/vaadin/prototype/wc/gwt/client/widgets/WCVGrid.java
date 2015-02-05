@@ -69,10 +69,10 @@ import com.vaadin.prototype.wc.gwt.client.widgets.grid.GData.GColumn;
 import com.vaadin.prototype.wc.gwt.client.widgets.grid.GData.GColumn.GHeader;
 import com.vaadin.prototype.wc.gwt.client.widgets.grid.GData.GColumn.GHeader.Format;
 import com.vaadin.prototype.wc.gwt.client.widgets.grid.GDataSource;
+import com.vaadin.prototype.wc.gwt.client.widgets.grid.GDomTableDataSource;
 import com.vaadin.prototype.wc.gwt.client.widgets.grid.GJsFuncDataSource;
 import com.vaadin.prototype.wc.gwt.client.widgets.grid.GJsObjectDataSource;
 import com.vaadin.prototype.wc.gwt.client.widgets.grid.GRestDataSource;
-import com.vaadin.prototype.wc.gwt.client.widgets.grid.GDomTableDataSource;
 import com.vaadin.shared.ui.grid.GridState;
 import com.vaadin.shared.ui.grid.HeightMode;
 
@@ -227,9 +227,10 @@ public class WCVGrid extends HTMLTableElement.Prototype implements
         }
 
         // If the wrapped DOM table has TR elements, we use it as data source
-        dataSource = GDomTableDataSource.createInstance(lightDom.get(0), this);
+        dataSource = GDomTableDataSource.createInstance(lightDom.filter("table").get(0), this);
         if (dataSource != null) {
             grid.setDataSource(dataSource);
+            recomputeColumnsWidth();
         }
     }
 
@@ -475,8 +476,8 @@ public class WCVGrid extends HTMLTableElement.Prototype implements
         }
     }
 
-    public void setColumnWidth(int column, int widht) {
-        grid.getColumn(column).setWidth(widht);
+    public void setColumnWidth(int column, int width) {
+        grid.getColumn(column).setWidth(width);
     }
 
     // TODO:
@@ -536,6 +537,7 @@ public class WCVGrid extends HTMLTableElement.Prototype implements
         } else {
             throw new RuntimeException("Unknown jso: " + jso);
         }
+        recomputeColumnsWidth();
     }
 
     boolean refreshing = false;
@@ -694,9 +696,15 @@ public class WCVGrid extends HTMLTableElement.Prototype implements
         c(e.getHeader());
         c(e.getFooter());
         c(e.getBody());
-        ColumnConfiguration columnConfiguration = f(e);
-        for (int i = 0; i < columnConfiguration.getColumnCount(); i++) {
-            columnConfiguration.setColumnWidth(i, columnConfiguration.getColumnWidth(i));
+        recomputeColumnsWidth();
+    }
+
+    private int negativeCounter = -2;
+    private void recomputeColumnsWidth() {
+        // TODO: this is a big hack. Setting any of the columns size to -2 triggers
+        // a width recomputing in the grid. This has been already reported #16618 & #16539
+        if (gridColumns != null && gridColumns.size() > 0) {
+           gridColumns.get(0).setWidth(--negativeCounter);
         }
     }
 
