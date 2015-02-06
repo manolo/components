@@ -36,7 +36,6 @@
 
   <h3>1.- Simplest possible with inline data</h3>
   <v-grid >
-  <!-- TODO: extend Table prototype: requires a customised version of the WC.getWCConstructor hack -->
   <table>
     <thead>
       <tr>
@@ -162,7 +161,6 @@
 
         // Maps to simple Renderer interface instance in GWT
         var valueRenderer = function(element, data, rowIndex) {
-          // TODO: element.innertHTML = wc.WCUtils.formatCurrency(data);
           element.innerHTML = wc.WCFormat.formatCurrency(data);
         }
 
@@ -170,18 +168,14 @@
         var progressRenderer = {
           init : function(element) {
             var child = document.createElement("v-progress");
-            // TODO: Exporting cell instead of element implies some caveats.
-            // cell.element.appendChild(child);
             element.appendChild(child);
           },
           render : function(element, data) {
-            // TODO: cell.element.children[0].value = data;
             element.children[0].setAttribute('value', data);
           }
         }
 
         // columns[0] uses default renderer that just sets the value as innerText
-        // TODO: myFormatGrid.columns[1].renderer = valueRenderer;
         grid.columns[1].renderer = valueRenderer;
         grid.columns[2].renderer = progressRenderer;
       });
@@ -255,7 +249,6 @@
 
   <v-grid id="mySelGrid" selectionMode="single">
   <table>
-    <head>
     <thead>
       <tr>
         <th>Name</th>
@@ -263,7 +256,6 @@
         <th>Progress</th>
       </tr>
     </thead>
-    </head>
   </table>
   </v-grid>
   <button id="mySelButton">Random select</button>
@@ -296,7 +288,6 @@
 
   <v-grid id="myMultiSelGrid" selectionMode="multi">
   <table>
-    <head>
     <thead>
       <tr>
         <th>Name</th>
@@ -304,7 +295,6 @@
         <th>Progress</th>
       </tr>
     </thead>
-    </head>
   </table>
   </v-grid>
   <button id="myMultiSelButton">Random select</button>
