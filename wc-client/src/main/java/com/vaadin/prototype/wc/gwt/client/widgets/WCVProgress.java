@@ -68,6 +68,8 @@ public class WCVProgress extends HTMLElement.Prototype implements
                 shadow.appendChild(style);
                 shadow.appendChild(container);
             } else {
+                // When we copy html content, it could be already initialised.
+                $(this).children().remove();
                 appendChild(style);
                 appendChild(container);
             }
@@ -124,5 +126,4 @@ public class WCVProgress extends HTMLElement.Prototype implements
     public void getTheme() {
         getAttribute("theme");
     }
-
 }

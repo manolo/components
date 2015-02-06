@@ -2,7 +2,6 @@ package com.vaadin.prototype.wc.gwt.client.widgets;
 
 import static com.google.gwt.query.client.GQuery.$;
 import static com.google.gwt.query.client.GQuery.Widgets;
-import static com.google.gwt.query.client.GQuery.console;
 import static com.vaadin.prototype.wc.gwt.client.widgets.WCUtils.getAttrDoubleValue;
 
 import com.google.gwt.core.client.js.JsExport;
@@ -71,6 +70,8 @@ public class WCVSlider extends HTMLElement.Prototype implements
                 shadow.appendChild(style);
                 shadow.appendChild(container);
             } else {
+                // When we copy html content, it could be already initialised.
+                $(this).children().remove();
                 appendChild(style);
                 appendChild(container);
             }
