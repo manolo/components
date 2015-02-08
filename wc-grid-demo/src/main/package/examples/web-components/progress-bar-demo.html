@@ -13,7 +13,7 @@
 
 <body vaadin-theme='valo'>
     <h3>Progress Bar example</h3>
-    <div style='width: 150px; transform: rotate(-90deg);'>
+    <div style='width: 150px; -webkit-transform: rotate(-90deg); transform: rotate(-90deg);'>
       <v-progress></v-progress>
       <v-progress></v-progress>
       <v-progress></v-progress>
@@ -32,7 +32,7 @@
       <v-progress></v-progress>
       <v-progress></v-progress>
     </div>
-    <div id='meter2' style='width: 150px; transform: rotate(0deg);'>
+    <div id='meter2' style='width: 150px'>
       <v-progress></v-progress>
       <v-progress></v-progress>
       <v-progress></v-progress>
@@ -55,7 +55,7 @@
       var prgs = document.querySelectorAll('v-progress');
       function update() {
         for (i in prgs) {
-          prgs[i].value =  Math.random();
+          prgs[i].setAttribute('value', Math.random());
         }
       }
       setInterval(update, 20)

@@ -78,8 +78,11 @@ UpdateModule() {
   rm -f module.tar
   perl -pi -e 's,^.*(nocache|<link).*$,,g' demo.html
   perl -pi -e 's,</head,  <link rel="import" href="'$package'.html"></link>\n</head,' demo.html
+  if [ $package = vaadin-grid ]
+  then
+    perl -pi -e 's,</head,  <link rel="import" href="../vaadin-progress-bar/vaadin-progress-bar.html"></link>\n</head,' demo.html
+  fi
   perl -pi -e 's,src="bower_components/,src="../,g' demo.html
-
 }
 
 UpdateVersion() {

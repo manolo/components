@@ -8,22 +8,6 @@
 <script src="bigdata.js"></script>
 </head>
 <body vaadin-theme='valo'>
-  <script>
-      function waitUntil(check, exec) {
-        var id = setInterval(function() {
-          if (r = check()) {
-            clearInterval(id);
-            exec(r)
-          }
-        }, 100);
-      }
-      function waitUntilGridReady(id, exec) {
-        waitUntil(function() {
-          var grid = document.getElementById(id);
-          return grid && grid.dataSource && grid;
-        }, exec);
-      }
-    </script>
   <h3>1.- Simplest possible with inline data</h3>
   <v-grid>
   <table>
@@ -88,18 +72,15 @@
   </v-grid>
 
   <script>
-      // We need to wait until the WC has been initialized
-      // It could take a long if we are compiling SDM
-      waitUntilGridReady("myGrid", function(grid) {
+        var myGrid = document.getElementById("myGrid");
         var data = [ [ "Grid", 10000, 0.8 ], [ "Vaadin X", 999999, 0.01 ],
                  [ "designer", 999999, 0.01 ] ];
 
         // we should set data size before setting the data source (grid bug)
-        grid.rowCount = data.length;
-        grid.dataSource = function(index, count) {
+        myGrid.rowCount = data.length;
+        myGrid.dataSource = function(index, count) {
           return data.slice(index, index + count);
         };
-      });
     </script>
 
   <h3>4.- Simplest possible with lazy data source (no formatting)</h3>
@@ -116,15 +97,13 @@
   </v-grid>
 
   <script>
-      waitUntilGridReady("myBigGrid", function(grid) {
-        grid.rowCount = myBigData.length;
-        grid.dataSource = function(index, count, callback) {
+        var myBigGrid = document.getElementById("myBigGrid");
+        myBigGrid.rowCount = myBigData.length;
+        myBigGrid.dataSource = function(index, count, callback) {
           setTimeout(function() {
             callback(myBigData.slice(index, index + count));
           }, 800);
         };
-      });
-      // Note: myBigData is defined at the end of the page
     </script>
 
   <h3>5.- Simplest possible with data source and formatting</h3>
@@ -141,17 +120,16 @@
   </table>
   </v-grid>
   <script>
-      waitUntilGridReady("myFormatGrid", function(grid) {
+        var myFormatGrid = document.getElementById("myFormatGrid");
         var data = [ [ "Grid", 10000, 0.8 ], [ "Vaadin X", 999999, 0.01 ], ];
 
-        grid.rowCount = data.length;
-        grid.dataSource = function(index, count) {
+        myFormatGrid.rowCount = data.length;
+        myFormatGrid.dataSource = function(index, count) {
           return data.slice(index, index + count);
         };
 
         // Maps to simple Renderer interface instance in GWT
         var valueRenderer = function(element, data, rowIndex) {
-          // TODO: element.innertHTML = wc.WCUtils.formatCurrency(data);
           element.innerHTML = wc.WCUtils.formatCurrency(data);
         }
 
@@ -159,8 +137,6 @@
         var progressRenderer = {
           init : function(element) {
             var child = document.createElement("v-progress");
-            // TODO: Exporting cell instead of element implies some caveats.
-            // cell.element.appendChild(child);
             element.appendChild(child);
           },
           render : function(element, data) {
@@ -170,10 +146,8 @@
         }
 
         // columns[0] uses default renderer that just sets the value as innerText
-        // TODO: myFormatGrid.columns[1].renderer = valueRenderer;
-        grid.columns[1].renderer = valueRenderer;
-        grid.columns[2].renderer = progressRenderer;
-      });
+        myFormatGrid.columns[1].renderer = valueRenderer;
+        myFormatGrid.columns[2].renderer = progressRenderer;
     </script>
 
   <h3>6.- Mapping data from a JS object into columns</h3>
@@ -190,24 +164,21 @@
   </table>
   </v-grid>
   <script>
-      waitUntilGridReady("myMapGrid", function(grid) {
+        var myMapGrid = document.getElementById("myMapGrid");
         var data = [{ name: "Grid", value: 10000, progress: 0.8 },
                 { name: "Vaadin X", value: 999999, progress: 0.01 }];
 
-        grid.rowCount = data.length;
-        grid.dataSource = function(index, count) {
+        myMapGrid.rowCount = data.length;
+        myMapGrid.dataSource = function(index, count) {
           return data.slice(index, index + count);
         };
 
-        // Corresponds to GridColumn.getValue()
-        grid.columns[0].value = function(rowObject, columnIndex) {
+        myMapGrid.columns[0].value = function(rowObject, columnIndex) {
           return "> " + rowObject.name;
         }
 
-        // Shorthand for using rowObject[value]
-        grid.columns[1].value = "value";
-        grid.columns[2].value = "progress";
-      });
+        myMapGrid.columns[1].value = "value";
+        myMapGrid.columns[2].value = "progress";
     </script>
 
   <h3>7. Complex headers</h3>
@@ -259,26 +230,25 @@
   Selected: <span id="mySelLabel">-1</span>
 
   <script>
-      waitUntilGridReady("mySelGrid", function(grid) {
+        var mySelGrid = document.getElementById("mySelGrid")
         var data = [ [ "Gridddd", 10000, 0.8 ], [ "Vaadin X", 999999, 0.01 ],
                  [ "designer", 43256, 0.01 ], [ "TK", 1967, 0.05 ] ];
 
         var button = document.getElementById("mySelButton");
         var label = document.getElementById("mySelLabel");
 
-        grid.rowCount = data.length;
-        grid.dataSource = function(index, count) {
+        mySelGrid.rowCount = data.length;
+        mySelGrid.dataSource = function(index, count) {
           return data.slice(index, index + count);
         };
 
-        grid.addEventListener("select", function(event) {
-          label.innerText = grid.selectedRow;
+        mySelGrid.addEventListener("select", function(event) {
+          label.innerText = mySelGrid.selectedRow;
         });
 
         button.addEventListener("click", function(event) {
-          grid.selectedRow = Math.floor(Math.random() * data.length);
+          mySelGrid.selectedRow = Math.floor(Math.random() * data.length);
         });
-      });
     </script>
 
   <h3>9.- Multi selection</h3>
@@ -300,28 +270,27 @@
   Selected: <span id="myMultiSelLabel">-1</span>
 
   <script>
-      waitUntilGridReady("myMultiSelGrid", function(grid) {
+        var myMultiSelGrid = document.getElementById("myMultiSelGrid")
         var data = [ [ "Gridddd", 10000, 0.8 ], [ "Vaadin X", 999999, 0.01 ],
                  [ "designer", 43256, 0.01 ], [ "TK", 1967, 0.05 ] ];
 
         var button = document.getElementById("myMultiSelButton");
         var label = document.getElementById("myMultiSelLabel");
 
-        grid.rowCount = data.length;
-        grid.dataSource = function(index, count) {
+        myMultiSelGrid.rowCount = data.length;
+        myMultiSelGrid.dataSource = function(index, count) {
           return data.slice(index, index + count);
         };
 
-        grid.addEventListener("select", function(event) {
-          label.innerText = grid.selectedRows;
+        myMultiSelGrid.addEventListener("select", function(event) {
+          label.innerText = myMultiSelGrid.selectedRows;
         });
 
         button.addEventListener("click", function(event) {
           var a = Math.floor(Math.random() * data.length);
           var b = Math.floor(Math.random() * data.length);
-          grid.selectedRows = [a, b];
+          myMultiSelGrid.selectedRows = [a, b];
         });
-      });
   </script>
 
   <h2>Declarative syntax</h2>

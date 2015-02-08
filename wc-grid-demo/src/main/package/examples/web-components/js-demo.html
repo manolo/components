@@ -36,6 +36,8 @@
   <button id="mySelButton">Random select</button>
   Selected: <span id="mySelLabel"></span>
   <script>
+    // Safari needs a timeout
+    setTimeout(function(){
         var data = [
                     [ "Grid", 10000, 0.8 ],
                     [ "Slider", 200, 0.3 ],
@@ -85,7 +87,7 @@
         // columns[0] uses default renderer that just sets the value as innerText
         grid.columns[1].renderer = valueRenderer;
         grid.columns[2].renderer = progressRenderer;
-
-    </script>
+    });
+  </script>
 </body>
 </html>
