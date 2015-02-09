@@ -161,7 +161,7 @@
 
         // Maps to simple Renderer interface instance in GWT
         var valueRenderer = function(element, data, rowIndex) {
-          element.innerHTML = wc.WCFormat.formatCurrency(data);
+          element.innerHTML = window.vaadin.Utils.formatCurrency(data);
         }
 
         // Maps to ComplexRenderer subclass in GWT
