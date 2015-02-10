@@ -21,9 +21,9 @@ import com.vaadin.prototype.wc.gwt.client.widgets.WCVSlider;
 public class VaadinComponents implements EntryPoint {
 
     public void onModuleLoad() {
-    	if (!GWT.isProdMode()) {
-    		GWT.setUncaughtExceptionHandler(new SuperDevModeUncaughtExceptionHandler());
-    	}
+        if (!GWT.isProdMode()) {
+            GWT.setUncaughtExceptionHandler(new SuperDevModeUncaughtExceptionHandler());
+        }
 
         // load vaadin-theme if specified in body
         WCUtils.loadVaadinGlobalTheme();
