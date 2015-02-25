@@ -8,8 +8,24 @@
 <script src="bigdata.js"></script>
 </head>
 <body vaadin-theme='valo'>
+  <script>
+      function waitUntil(check, exec) {
+        var id = setInterval(function() {
+          if (r = check()) {
+            clearInterval(id);
+            exec(r)
+          }
+        }, 100);
+      }
+      function waitUntilGridReady(id, exec) {
+        waitUntil(function() {
+          var grid = document.getElementById(id);
+          return grid && grid.dataSource && grid;
+        }, exec);
+      }
+    </script>
   <h3>1.- Simplest possible with inline data</h3>
-  <v-grid>
+  <v-grid >
   <table>
     <thead>
       <tr>
@@ -72,15 +88,18 @@
   </v-grid>
 
   <script>
-        var myGrid = document.getElementById("myGrid");
+      // We need to wait until the WC has been initialized
+      // It could take a long if we are compiling SDM
+      waitUntilGridReady("myGrid", function(grid) {
         var data = [ [ "Grid", 10000, 0.8 ], [ "Vaadin X", 999999, 0.01 ],
                  [ "designer", 999999, 0.01 ] ];
 
         // we should set data size before setting the data source (grid bug)
-        myGrid.rowCount = data.length;
-        myGrid.dataSource = function(index, count) {
+        grid.rowCount = data.length;
+        grid.dataSource = function(index, count) {
           return data.slice(index, index + count);
         };
+      });
     </script>
 
   <h3>4.- Simplest possible with lazy data source (no formatting)</h3>
@@ -97,13 +116,15 @@
   </v-grid>
 
   <script>
-        var myBigGrid = document.getElementById("myBigGrid");
-        myBigGrid.rowCount = myBigData.length;
-        myBigGrid.dataSource = function(index, count, callback) {
+      waitUntilGridReady("myBigGrid", function(grid) {
+        grid.rowCount = myBigData.length;
+        grid.dataSource = function(index, count, callback) {
           setTimeout(function() {
             callback(myBigData.slice(index, index + count));
           }, 800);
         };
+      });
+      // Note: myBigData is defined at the end of the page
     </script>
 
   <h3>5.- Simplest possible with data source and formatting</h3>
@@ -120,17 +141,17 @@
   </table>
   </v-grid>
   <script>
-        var myFormatGrid = document.getElementById("myFormatGrid");
+      waitUntilGridReady("myFormatGrid", function(grid) {
         var data = [ [ "Grid", 10000, 0.8 ], [ "Vaadin X", 999999, 0.01 ], ];
 
-        myFormatGrid.rowCount = data.length;
-        myFormatGrid.dataSource = function(index, count) {
+        grid.rowCount = data.length;
+        grid.dataSource = function(index, count) {
           return data.slice(index, index + count);
         };
 
         // Maps to simple Renderer interface instance in GWT
         var valueRenderer = function(element, data, rowIndex) {
-          element.innerHTML = wc.WCUtils.formatCurrency(data);
+          element.innerHTML = window.vaadin.Utils.formatCurrency(data);
         }
 
         // Maps to ComplexRenderer subclass in GWT
@@ -140,14 +161,14 @@
             element.appendChild(child);
           },
           render : function(element, data) {
-            // TODO: cell.element.children[0].value = data;
             element.children[0].setAttribute('value', data);
           }
         }
 
         // columns[0] uses default renderer that just sets the value as innerText
-        myFormatGrid.columns[1].renderer = valueRenderer;
-        myFormatGrid.columns[2].renderer = progressRenderer;
+        grid.columns[1].renderer = valueRenderer;
+        grid.columns[2].renderer = progressRenderer;
+      });
     </script>
 
   <h3>6.- Mapping data from a JS object into columns</h3>
@@ -164,21 +185,24 @@
   </table>
   </v-grid>
   <script>
-        var myMapGrid = document.getElementById("myMapGrid");
+      waitUntilGridReady("myMapGrid", function(grid) {
         var data = [{ name: "Grid", value: 10000, progress: 0.8 },
                 { name: "Vaadin X", value: 999999, progress: 0.01 }];
 
-        myMapGrid.rowCount = data.length;
-        myMapGrid.dataSource = function(index, count) {
+        grid.rowCount = data.length;
+        grid.dataSource = function(index, count) {
           return data.slice(index, index + count);
         };
 
-        myMapGrid.columns[0].value = function(rowObject, columnIndex) {
+        // Corresponds to GridColumn.getValue()
+        grid.columns[0].value = function(rowObject, columnIndex) {
           return "> " + rowObject.name;
         }
 
-        myMapGrid.columns[1].value = "value";
-        myMapGrid.columns[2].value = "progress";
+        // Shorthand for using rowObject[value]
+        grid.columns[1].value = "value";
+        grid.columns[2].value = "progress";
+      });
     </script>
 
   <h3>7. Complex headers</h3>
@@ -215,7 +239,6 @@
 
   <v-grid id="mySelGrid" selectionMode="single">
   <table>
-    <head>
     <thead>
       <tr>
         <th>Name</th>
@@ -223,39 +246,38 @@
         <th>Progress</th>
       </tr>
     </thead>
-    </head>
   </table>
   </v-grid>
   <button id="mySelButton">Random select</button>
   Selected: <span id="mySelLabel">-1</span>
 
   <script>
-        var mySelGrid = document.getElementById("mySelGrid")
+      waitUntilGridReady("mySelGrid", function(grid) {
         var data = [ [ "Gridddd", 10000, 0.8 ], [ "Vaadin X", 999999, 0.01 ],
                  [ "designer", 43256, 0.01 ], [ "TK", 1967, 0.05 ] ];
 
         var button = document.getElementById("mySelButton");
         var label = document.getElementById("mySelLabel");
 
-        mySelGrid.rowCount = data.length;
-        mySelGrid.dataSource = function(index, count) {
+        grid.rowCount = data.length;
+        grid.dataSource = function(index, count) {
           return data.slice(index, index + count);
         };
 
-        mySelGrid.addEventListener("select", function(event) {
-          label.innerText = mySelGrid.selectedRow;
+        grid.addEventListener("select", function(event) {
+          label.innerText = grid.selectedRow;
         });
 
         button.addEventListener("click", function(event) {
-          mySelGrid.selectedRow = Math.floor(Math.random() * data.length);
+          grid.selectedRow = Math.floor(Math.random() * data.length);
         });
+      });
     </script>
 
   <h3>9.- Multi selection</h3>
 
   <v-grid id="myMultiSelGrid" selectionMode="multi">
   <table>
-    <head>
     <thead>
       <tr>
         <th>Name</th>
@@ -263,34 +285,34 @@
         <th>Progress</th>
       </tr>
     </thead>
-    </head>
   </table>
   </v-grid>
   <button id="myMultiSelButton">Random select</button>
   Selected: <span id="myMultiSelLabel">-1</span>
 
   <script>
-        var myMultiSelGrid = document.getElementById("myMultiSelGrid")
+      waitUntilGridReady("myMultiSelGrid", function(grid) {
         var data = [ [ "Gridddd", 10000, 0.8 ], [ "Vaadin X", 999999, 0.01 ],
                  [ "designer", 43256, 0.01 ], [ "TK", 1967, 0.05 ] ];
 
         var button = document.getElementById("myMultiSelButton");
         var label = document.getElementById("myMultiSelLabel");
 
-        myMultiSelGrid.rowCount = data.length;
-        myMultiSelGrid.dataSource = function(index, count) {
+        grid.rowCount = data.length;
+        grid.dataSource = function(index, count) {
           return data.slice(index, index + count);
         };
 
-        myMultiSelGrid.addEventListener("select", function(event) {
-          label.innerText = myMultiSelGrid.selectedRows;
+        grid.addEventListener("select", function(event) {
+          label.innerText = grid.selectedRows;
         });
 
         button.addEventListener("click", function(event) {
           var a = Math.floor(Math.random() * data.length);
           var b = Math.floor(Math.random() * data.length);
-          myMultiSelGrid.selectedRows = [a, b];
+          grid.selectedRows = [a, b];
         });
+      });
   </script>
 
   <h2>Declarative syntax</h2>
@@ -329,7 +351,7 @@
   </v-grid>
 
   <h3>6. renderers</h3>
-  <v-grid id="myRendererDeclaration" dataSource={{myData}}>
+  <v-grid id="myRendererDeclaration" dataSource='{{myData}}'>
   <table>
     <thead>
       <tr>
@@ -342,7 +364,7 @@
       <tr template>
         <td>{{data}}</td>
         <td>{{data}} €</td>
-        <td><v-progress value="{{data}}" /></td>
+        <td><v-progress value='{{data}}' /></td>
       </tr>
     </tbody>
   </table>
