@@ -63,6 +63,9 @@ public class WCVProgress extends HTMLElement.Prototype implements
             }
             elementWidget.addAttachHandler(this);
 
+            // behave like the html5 <progress> element
+            $(this).css("display", "inline-block");
+
             if (getAttribute("shadow") != null) {
                 HTMLShadow shadow = createShadowRoot();
                 shadow.appendChild(style);
