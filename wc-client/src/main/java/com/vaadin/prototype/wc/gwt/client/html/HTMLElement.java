@@ -47,8 +47,8 @@ public interface HTMLElement {
         @Override public void innerHTML(String string) {
             htmlElement().innerHTML(string);
         }
-        @Override public void innerText(String string) {
-            htmlElement().innerText(string);
+        @Override public void textContent(String string) {
+            htmlElement().textContent(string);
         }
         @Override
         public void dispatchEvent(HTMLEvents ev) {
@@ -59,8 +59,8 @@ public interface HTMLElement {
             return htmlElement().children();
         }
         @Override
-        public String innerText() {
-            return htmlElement().innerText();
+        public String textContent() {
+            return htmlElement().textContent();
         }
     }
 
@@ -102,7 +102,7 @@ public interface HTMLElement {
     @JsProperty HTMLElement className(String string);
     @JsProperty HTMLStyle style();
     @JsProperty void innerHTML(String string);
-    @JsProperty void innerText(String string);
-    @JsProperty String innerText();
+    @JsProperty void textContent(String string);
+    @JsProperty String textContent();
     @JsProperty NodeList<?> children();
 }

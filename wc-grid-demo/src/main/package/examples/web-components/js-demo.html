@@ -60,7 +60,7 @@
         };
 
         grid.addEventListener("select", function(event) {
-          label.innerText = grid.selectedRow;
+          label.textContent = grid.selectedRow;
         });
 
         button.addEventListener("click", function(event) {
@@ -84,7 +84,7 @@
           }
         }
 
-        // columns[0] uses default renderer that just sets the value as innerText
+        // columns[0] uses default renderer that just sets the value as textContent
         grid.columns[1].renderer = valueRenderer;
         grid.columns[2].renderer = progressRenderer;
     });

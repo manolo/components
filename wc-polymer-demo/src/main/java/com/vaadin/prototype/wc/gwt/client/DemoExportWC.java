@@ -119,7 +119,7 @@ public class DemoExportWC implements EntryPoint {
         HTMLElement style = WC.create("style");
         style.setAttribute("language", "text/css");
         String url = GWT.getModuleBaseForStaticFiles() + "gwt/clean/clean.css";
-        style.innerText("@import url('" + url + "')");
+        style.textContent("@import url('" + url + "')");
         Elements.head.appendChild(style);
     }
 }

@@ -100,7 +100,7 @@ public class WCDateBox extends HTMLElement.Prototype implements
     private void readAttributes() {
         theme = getAttrValue("theme", "chrome");
         String url = GWT.getModuleBaseForStaticFiles() + "gwt/" + theme + "/" + theme + ".css";
-        style.innerText("@import url('" + url + "')");
+        style.textContent("@import url('" + url + "')");
         container.setAttribute("class", theme);
 
         // TODO: read value and parse it
