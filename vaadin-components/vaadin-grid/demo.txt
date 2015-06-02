@@ -1,0 +1,2 @@
+g = document.querySelector('v-grid')
+g.lightDom.querySelectorAll("table tbody")[0].innerHTML += g.lightDom.querySelectorAll("table tbody")[0].innerHTML

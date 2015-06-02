@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+<script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+
+
+<link href="vaadin-grid.html" rel="import">
+<script src="demodata.js"></script>
+<style>
+td.red, th.red, .red th, .red td, td.foot1, .foot1 td {
+  background: mistyrose !important;
+}
+td.blue, th.blue, .blue th, .blue td, td.foot2, .foot2 td {
+  background: aliceblue !important;
+}
+.foot1, .foot2 {
+  font-weight: bold !important;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+<script>
+console.log(1)
+</script>
+  <script>
+    function waitUntilGridReady(id, cb) {
+      console.log(2)
+      if (window.vaadin && vaadin._v_grid_ready) {
+        console.log(3)
+        cb(document.getElementById(id));
+      } else {
+        console.log(4)
+        try {
+        document.addEventListener("v-grid-ready", function(){
+          console.log(5, document.getElementById(id))
+          cb(document.getElementById(id));
+        });
+        } catch(e) {
+          console.log(">>>", e)
+        }
+      }
+    }
+    </script>
+
+<ol>
+  <li>
+  <h3>Simplest possible with data source (all data available, no formatting) ...</h3>
+  <v-grid id='myGrid'>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>Progress</th>
+      </tr>
+    </thead>
+  </table>
+  </v-grid>
+
+  <script>
+      // We need to wait until the WC has been initialized
+      // It could take a long if we are compiling SDM
+      waitUntilGridReady("myGrid", function(grid) {
+        console.log("AA")
+        var data = [ [ "Grid", 10000, 0.8 ], [ "Vaadin X", 999999, 0.01 ],
+                 [ "designer", 999999, 0.01 ] ];
+
+        console.log("AA")
+        grid.data.source = function(req) {
+          console.log("BB")
+          var array = data.slice(req.index, req.index + req.count);
+          console.log("CC")
+          req.success(array, data.length);
+        };
+        console.log("AA")
+      });
+    </script>
+  </li>
+</ol>
+</body>
+</html>
