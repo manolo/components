@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+<script src="../../../bower_components/webcomponentsjs/webcomponents.min.js"></script>
+
+
+<link href="vaadin-grid.html" rel="import">
+<script src="demodata.js"></script>
+<style>
+td.red, th.red, .red th, .red td, td.foot1, .foot1 td {
+  background: mistyrose !important;
+}
+td.blue, th.blue, .blue th, .blue td, td.foot2, .foot2 td {
+  background: aliceblue !important;
+}
+.foot1, .foot2 {
+  font-weight: bold !important;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+  <script>
+    function waitUntilGridReady(id, cb) {
+      if (window.vaadin && vaadin._v_grid_ready) {
+        cb(document.getElementById(id));
+      } else {
+        document.addEventListener("v-grid-ready", function(){
+          cb(document.getElementById(id));
+        });
+      }
+    }
+    </script>
+
+  <li>
+  <h3>DOM API</h3>
+  <v-grid
+    selection-mode='none'
+    selected-rows='[]'
+    rows=3
+    frozen-columns= '-1'
+    style='width: 100%'
+    editable
+    
+    >
+  <table >
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th sortable>Value</th>
+        <th width=40>Progress</th>
+        <th min-width=200>foo</th>
+        <th>bar</th>
+        <th flex=100>foo</th>
+        <th flex=0>bar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Grid</td>
+        <td>10000</td>
+        <td>0.8</td>
+        <td>lorem ipsum</td>
+        <td>dolor sit amet</td>
+        <td>lorem ipsum</td>
+        <td>dolor sit amet</td>
+      </tr>
+      <tr>
+        <td>Vaadin X</td>
+        <td>999999</td>
+        <td>0.8</td>
+        <td>lorem ipsum</td>
+        <td>dolor sit amet</td>
+        <td>lorem ipsum</td>
+        <td>dolor sit amet</td>
+      </tr>
+      <tr>
+        <td>Designer</td>
+        <td>10000</td>
+        <td>0.5</td>
+        <td>lorem ipsum</td>
+        <td>dolor sit amet</td>
+        <td>lorem ipsum</td>
+        <td>dolor sit amet</td>
+      </tr>
+      <tr>
+        <td>Spreadsheet</td>
+        <td>10000</td>
+        <td>0.5</td>
+        <td>lorem ipsum</td>
+        <td>dolor sit amet</td>
+        <td>lorem ipsum</td>
+        <td>dolor sit amet</td>
+      </tr>
+      <tr>
+        <td>TK</td>
+        <td>10000</td>
+        <td>0.5</td>
+        <td>lorem ipsum</td>
+        <td>dolor sit amet</td>
+        <td>lorem ipsum</td>
+        <td>dolor sit amet</td>
+      </tr>
+    </tbody>
+  </table>
+  </v-grid>
+  </li>
+
+
+</ol>
+</body>
+</html>

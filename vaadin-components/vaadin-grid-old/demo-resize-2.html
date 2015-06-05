@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+<script src="../../../bower_components/webcomponentsjs/webcomponents.js"></script>
+
+
+<style>
+body {
+  margin: 0px;
+  padding: 0px;
+}
+.out {
+  position: absolute;
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
+  background: pink;
+  padding: 4px;
+}
+#grid-one {
+  position: relative;
+  float: right;
+  width: calc(40% - 8px);
+  height: calc(50% - 8px);
+  background: yellow;
+  padding: 4px;
+
+}
+#grid-two {
+  position: relative;
+  width: calc(60% - 8px);
+  height: calc(50% - 8px);
+  background: green;
+  padding: 4px;
+}
+#grid-three {
+  float:none;
+  position: relative;
+  width: calc(100% - 8px);
+  height: calc(50% - 8px);
+  background: blue;
+  padding: 4px;
+}
+
+v-grid {
+  height: 100%;
+}
+
+</style>
+<link href="vaadin-grid.html" rel="import">
+<script src="demodata.js"></script>
+<style>
+
+</style>
+</head>
+<body>
+  <script>
+    function waitUntilGridReady(id, cb) {
+      if (window.vaadin && vaadin._v_grid_ready) {
+        cb(document.getElementById(id));
+      } else {
+        document.addEventListener("v-grid-ready", function(){
+          cb(document.getElementById(id));
+        });
+      }
+    }
+    var infiniteDataSource = function(req) {
+      var data = [];
+      for (var i = req.index; i < req.index + req.count; i++) {
+        data.push(["foo " + i, Math.floor((Math.random() * 10000) + 1), Math.random(), "lorem - " + i, "lorem - " + i, "lorem - " + i, "lorem - " + i ]);
+      }
+      req.success(data, this.size);
+    };
+    
+    </script>
+    
+    <div class='out'>
+        <v-grid id='grid-one' >
+          <table >
+          <colgroup><col><col><col><col><col><col><col></colgroup>
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th sortable>Value</th>
+            <th width=40>Progress</th>
+            <th>foo</th>
+            <th>bar</th>
+            <th>foo</th>
+            <th>bar</th>
+          </tr>
+          </thead>
+          </table>
+        </v-grid>      
+        <v-grid id='grid-two' >
+          <table >
+          <colgroup><col><col><col><col><col><col><col></colgroup>
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th sortable>Value</th>
+            <th width=40>Progress</th>
+            <th>foo</th>
+            <th>bar</th>
+            <th>foo</th>
+            <th>bar</th>
+          </tr>
+          </thead>
+          </table>
+        </v-grid>        
+        <v-grid id='grid-three' >
+          <table >
+          <colgroup><col><col><col><col><col><col><col></colgroup>
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th sortable>Value</th>
+            <th width=40>Progress</th>
+            <th min-width=200>foo</th>
+            <th>bar</th>
+            <th flex=100>foo</th>
+            <th flex=0>bar</th>
+          </tr>
+          </thead>
+          </table>
+        </v-grid>  
+    </div>
+
+    <script>
+      waitUntilGridReady("grid-one", function(grid) {
+        infiniteDataSource.size = 400;
+        grid.data.source = infiniteDataSource;
+      });
+      waitUntilGridReady("grid-two", function(grid) {
+        infiniteDataSource.size = 400;
+        grid.data.source = infiniteDataSource;
+      });
+      waitUntilGridReady("grid-three", function(grid) {
+        infiniteDataSource.size = 400;
+        grid.data.source = infiniteDataSource;
+      });
+    </script>
+  </script>
+</body>
+</html>

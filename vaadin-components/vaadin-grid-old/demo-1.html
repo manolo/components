@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+  <script>Polymer = {dom: 'shadow'};</script>
+
+<script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+
+
+<link href="vaadin-grid.html" rel="import">
+<script src="demodata.js"></script>
+<style>
+td.red, th.red, .red th, .red td, td.foot1, .foot1 td {
+  background: mistyrose !important;
+}
+td.blue, th.blue, .blue th, .blue td, td.foot2, .foot2 td {
+  background: aliceblue !important;
+}
+.foot1, .foot2 {
+  font-weight: bold !important;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+  <script>
+    function waitUntilGridReady(id, cb) {
+      if (window.vaadin && vaadin._v_grid_ready) {
+        cb(document.getElementById(id));
+      } else {
+        document.addEventListener("v-grid-ready", function(){
+          cb(document.getElementById(id));
+        });
+      }
+    }
+    </script>
+
+<ol>
+ <li>
+  <h3>Mapping data from a JS object into columns</h3>
+
+  <v-grid id="myMapGrid">
+  <table>
+    <col header-text="Name">
+    <col header-text="Value">
+    <col header-text="Progress">
+  </table>
+  </v-grid>
+    <button id="updateButton">update</button>
+    <button id="addButton">add</button>
+    <button id="removeButton">remove</button>
+  <script>
+    var data = [{ name: "Grid", value: 10000, progress: 0.8 },
+      { name: "Vaadin X", value: 999999, progress: 0.01 }];
+
+      waitUntilGridReady("myMapGrid", function(grid) {
+        window.g = window.grid = grid;
+        
+        grid.data.source = function(req) {
+          req.success(data.slice(req.index, req.index + req.count), data.length);
+        };
+
+        grid.columns[0].valueGenerator = function(rowObject, columnIndex) {
+          return "> " + rowObject.name;
+        };
+
+        grid.columns[1].name = "value";
+        grid.columns[2].name = "progress";
+      });
+
+      document.querySelector('#updateButton').addEventListener('click', function(e) {
+        var grid = document.querySelector('#myMapGrid');
+
+        var updatedItem = {name: "Button X", value: Math.round(Math.random() * 1000), progress: Math.random()};
+        data[0] = updatedItem;
+        grid.data.clearCache();
+      });
+
+      document.querySelector('#addButton').addEventListener('click', function(e) {
+        var grid = document.querySelector('#myMapGrid');
+
+        data.splice(0, 0, {name: "Button " + data.length, value: 111, progress: 0.01});
+        grid.data.clearCache(data.length);
+      });
+
+      document.querySelector('#removeButton').addEventListener('click', function(e) {
+        var grid = document.querySelector('#myMapGrid');
+
+        data.splice(0, 1);
+        grid.data.clearCache(data.length);
+      });
+  </script>
+  </li>
+
+</ol>
+</body>
+</html>
