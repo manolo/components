@@ -254,7 +254,7 @@ public abstract class Column<C, T> {
                     && (bodyRenderer instanceof WidgetRenderer || renderer instanceof WidgetRenderer)) {
                 // Column needs to be recreated.
                 index = grid.getColumns().indexOf(this);
-                conf = grid.escalator.getColumnConfiguration();
+                conf = grid.getEscalator().getColumnConfiguration();
                 widthInConfiguration = conf.getColumnWidth(index);
 
                 conf.removeColumns(index, 1);
@@ -309,7 +309,7 @@ public abstract class Column<C, T> {
         assert !isHidden() : "applying width for a hidden column";
         if (grid != null) {
             int index = grid.getVisibleColumns().indexOf(this);
-            ColumnConfiguration conf = grid.escalator
+            ColumnConfiguration conf = grid.getEscalator()
                     .getColumnConfiguration();
             conf.setColumnWidth(index, pixels);
         }
@@ -346,7 +346,7 @@ public abstract class Column<C, T> {
         if (isHidden()) {
             return 0;
         }
-        return grid.escalator.getColumnConfiguration()
+        return grid.getEscalator().getColumnConfiguration()
                 .getColumnWidthActual(
                         grid.getVisibleColumns().indexOf(this));
     }
@@ -442,7 +442,7 @@ public abstract class Column<C, T> {
     void setHidden(boolean hidden, boolean userOriginated) {
         if (this.hidden != hidden) {
             if (hidden) {
-                grid.escalator.getColumnConfiguration().removeColumns(
+                grid.getEscalator().getColumnConfiguration().removeColumns(
                         grid.getVisibleColumns().indexOf(this), 1);
                 this.hidden = hidden;
             } else {
@@ -450,18 +450,18 @@ public abstract class Column<C, T> {
 
                 final int columnIndex = grid.getVisibleColumns().indexOf(
                         this);
-                grid.escalator.getColumnConfiguration().insertColumns(
+                grid.getEscalator().getColumnConfiguration().insertColumns(
                         columnIndex, 1);
 
                 // make sure column is set to frozen if it needs to be,
                 // escalator doesn't handle situation where the added column
                 // would be the last frozen column
                 int gridFrozenColumns = grid.getFrozenColumnCount();
-                int escalatorFrozenColumns = grid.escalator
+                int escalatorFrozenColumns = grid.getEscalator()
                         .getColumnConfiguration().getFrozenColumnCount();
                 if (gridFrozenColumns > escalatorFrozenColumns
                         && escalatorFrozenColumns == columnIndex) {
-                    grid.escalator.getColumnConfiguration()
+                    grid.getEscalator().getColumnConfiguration()
                             .setFrozenColumnCount(++escalatorFrozenColumns);
                 }
             }

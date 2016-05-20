@@ -57,7 +57,7 @@ public abstract class AbstractGridMouseEvent<HANDLER extends AbstractGridMouseEv
             return;
         }
 
-        final RowContainer container = grid.escalator
+        final RowContainer container = grid.getEscalator()
                 .findRowContainer(targetElement);
         if (container == null) {
             // No container for given element
@@ -65,9 +65,9 @@ public abstract class AbstractGridMouseEvent<HANDLER extends AbstractGridMouseEv
         }
 
         Section section = Section.FOOTER;
-        if (container == grid.escalator.getHeader()) {
+        if (container == grid.getEscalator().getHeader()) {
             section = Section.HEADER;
-        } else if (container == grid.escalator.getBody()) {
+        } else if (container == grid.getEscalator().getBody()) {
             section = Section.BODY;
         }
 

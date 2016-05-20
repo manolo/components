@@ -85,7 +85,7 @@ class GridSpacerUpdater<T> implements SpacerUpdater {
             spacerHeight = measuredHeight;
         }
 
-        this.grid.escalator.getBody().setSpacer(rowIndex, spacerHeight);
+        this.grid.getEscalator().getBody().setSpacer(rowIndex, spacerHeight);
     }
 
     @Override

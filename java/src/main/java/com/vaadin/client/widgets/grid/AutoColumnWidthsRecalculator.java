@@ -103,11 +103,11 @@ class AutoColumnWidthsRecalculator<T> {
         }
 
         // Update latest width to prevent recalculate on height change.
-        lastCalculatedInnerWidth = this.grid.escalator.getInnerWidth();
+        lastCalculatedInnerWidth = this.grid.getEscalator().getInnerWidth();
     }
 
     private boolean columnsAreGuaranteedToBeWiderThanGrid() {
-        double freeSpace = this.grid.escalator.getInnerWidth();
+        double freeSpace = this.grid.getEscalator().getInnerWidth();
         for (Column<?, ?> column : this.grid.getVisibleColumns()) {
             if (column.getWidth() >= 0) {
                 freeSpace -= column.getWidth();
@@ -128,7 +128,7 @@ class AutoColumnWidthsRecalculator<T> {
         for (int index = 0; index < columns.size(); index++) {
             selfWidths.put(index, columns.get(index).getWidth());
         }
-        grid.escalator.getColumnConfiguration().setColumnWidths(
+        grid.getEscalator().getColumnConfiguration().setColumnWidths(
                 selfWidths);
 
         /*
@@ -154,7 +154,7 @@ class AutoColumnWidthsRecalculator<T> {
                 constrainedWidths.put(index, column.getMaximumWidth());
             }
         }
-        grid.escalator.getColumnConfiguration().setColumnWidths(
+        grid.getEscalator().getColumnConfiguration().setColumnWidths(
                 constrainedWidths);
     }
 
@@ -216,7 +216,7 @@ class AutoColumnWidthsRecalculator<T> {
          * can distribute the remaining pixels to all columns according to
          * their expand ratios.
          */
-        double pixelsToDistribute = this.grid.escalator.getInnerWidth()
+        double pixelsToDistribute = this.grid.getEscalator().getInnerWidth()
                 - reservedPixels;
         if (pixelsToDistribute <= 0 || totalRatios <= 0) {
             if (pixelsToDistribute <= 0) {
@@ -368,7 +368,7 @@ class AutoColumnWidthsRecalculator<T> {
 
     private void setColumnSizes(Map<Integer, Double> columnSizes) {
         // Set all widths at once
-        this.grid.escalator.getColumnConfiguration().setColumnWidths(columnSizes);
+        this.grid.getEscalator().getColumnConfiguration().setColumnWidths(columnSizes);
     }
 
     private int getExpandRatio(Column<?, ?> column,

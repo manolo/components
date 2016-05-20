@@ -51,9 +51,9 @@ public abstract class AbstractGridKeyEvent<HANDLER extends AbstractGridKeyEventH
 
             Section section = Section.FOOTER;
             final RowContainer container = grid.cellFocusHandler.containerWithFocus;
-            if (container == grid.escalator.getHeader()) {
+            if (container == grid.getEscalator().getHeader()) {
                 section = Section.HEADER;
-            } else if (container == grid.escalator.getBody()) {
+            } else if (container == grid.getEscalator().getBody()) {
                 section = Section.BODY;
             }
 

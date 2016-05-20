@@ -223,7 +223,7 @@ class Sidebar extends Composite implements HasEnabled {
     }
 
     private void setHeightToHeaderCellHeight() {
-        RowContainer header = grid.escalator.getHeader();
+        RowContainer header = grid.getEscalator().getHeader();
         if (header.getRowCount() == 0
                 || !header.getRowElement(0).hasChildNodes()) {
             Grid.getLogger()

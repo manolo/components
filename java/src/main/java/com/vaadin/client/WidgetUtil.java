@@ -28,6 +28,7 @@ import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
@@ -410,17 +411,22 @@ public class WidgetUtil {
 
     public static int getNativeScrollbarSize() {
         if (detectedScrollbarSize < 0) {
-            Element scroller = DOM.createDiv();
+            // Using an iFrame to calculate the native scrollbar size
+            IFrameElement iFrame = IFrameElement.as(DOM.createIFrame());
+            iFrame.getStyle().setProperty("position", "absolute");
+            iFrame.getStyle().setProperty("marginLeft", "-5000px");
+            RootPanel.getBodyElement().appendChild(iFrame);
+            Document contentDocument = iFrame.getContentDocument();
+
+            Element scroller = contentDocument.createElement("div");
             scroller.getStyle().setProperty("width", "50px");
             scroller.getStyle().setProperty("height", "50px");
             scroller.getStyle().setProperty("overflow", "scroll");
-            scroller.getStyle().setProperty("position", "absolute");
-            scroller.getStyle().setProperty("marginLeft", "-5000px");
-            RootPanel.getBodyElement().appendChild(scroller);
+            contentDocument.getBody().appendChild(scroller);
+
             detectedScrollbarSize = scroller.getOffsetWidth()
                     - scroller.getPropertyInt("clientWidth");
-
-            RootPanel.getBodyElement().removeChild(scroller);
+            RootPanel.getBodyElement().removeChild(iFrame);
         }
         return detectedScrollbarSize;
     }

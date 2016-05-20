@@ -33,7 +33,7 @@ public class CellFocusHandler<T> {
     public CellFocusHandler(Grid<T> grid) {
         this.grid = grid;
         this.grid.sinkEvents(getNavigationEvents());
-        this.containerWithFocus = this.grid.escalator.getBody();
+        this.containerWithFocus = this.grid.getEscalator().getBody();
     }
 
     Cell getFocusedCell() {
@@ -83,7 +83,7 @@ public class CellFocusHandler<T> {
      */
     public void updateFocusedRowStyle(Row row) {
         if (rowWithFocus == row.getRow()
-                && containerWithFocus == this.grid.escalator.getBody()) {
+                && containerWithFocus == this.grid.getEscalator().getBody()) {
             if (row.getElement() != rowWithFocusStyle) {
                 // Row should have focus style but does not have it.
                 if (rowWithFocusStyle != null) {
@@ -93,7 +93,7 @@ public class CellFocusHandler<T> {
                 rowWithFocusStyle.addClassName(this.grid.rowFocusStyleName);
             }
         } else if (rowWithFocusStyle == row.getElement()
-                || (containerWithFocus != this.grid.escalator.getBody() && rowWithFocusStyle != null)) {
+                || (containerWithFocus != this.grid.getEscalator().getBody() && rowWithFocusStyle != null)) {
             // Remove focus style.
             rowWithFocusStyle.removeClassName(this.grid.rowFocusStyleName);
             rowWithFocusStyle = null;
@@ -126,7 +126,7 @@ public class CellFocusHandler<T> {
         rowWithFocus = rowIndex;
         Range oldRange = cellFocusRange;
 
-        if (container == this.grid.escalator.getBody()) {
+        if (container == this.grid.getEscalator().getBody()) {
             this.grid.scrollToRow(rowWithFocus);
             cellFocusRange = Range.withLength(columnIndexDOM, 1);
         } else {
@@ -147,9 +147,9 @@ public class CellFocusHandler<T> {
         }
         int columnIndex = this.grid.getColumns().indexOf(
                 this.grid.getVisibleColumn(columnIndexDOM));
-        if (columnIndex >= this.grid.escalator.getColumnConfiguration()
+        if (columnIndex >= this.grid.getEscalator().getColumnConfiguration()
                 .getFrozenColumnCount()) {
-            this.grid.escalator.scrollToColumn(columnIndexDOM, ScrollDestination.ANY,
+            this.grid.getEscalator().scrollToColumn(columnIndexDOM, ScrollDestination.ANY,
                     10);
         }
 
@@ -164,9 +164,9 @@ public class CellFocusHandler<T> {
             RowContainer oldContainer = this.containerWithFocus;
             this.containerWithFocus = container;
 
-            if (oldContainer == this.grid.escalator.getBody()) {
+            if (oldContainer == this.grid.getEscalator().getBody()) {
                 lastFocusedBodyRow = oldRow;
-            } else if (oldContainer == this.grid.escalator.getHeader()) {
+            } else if (oldContainer == this.grid.getEscalator().getHeader()) {
                 lastFocusedHeaderRow = oldRow;
             } else {
                 lastFocusedFooterRow = oldRow;
@@ -175,7 +175,7 @@ public class CellFocusHandler<T> {
             if (!oldRange.equals(cellFocusRange)) {
                 this.grid.refreshHeader();
                 this.grid.refreshFooter();
-                if (oldContainer == this.grid.escalator.getBody()) {
+                if (oldContainer == this.grid.getEscalator().getBody()) {
                     oldContainer.refreshRows(oldRow, 1);
                 }
             } else {
@@ -197,7 +197,7 @@ public class CellFocusHandler<T> {
      */
     public void setCellFocus(CellReference<T> cell) {
         setCellFocus(cell.getRowIndex(), cell.getColumnIndexDOM(),
-                this.grid.escalator.findRowContainer(cell.getElement()));
+                this.grid.getEscalator().findRowContainer(cell.getElement()));
     }
 
     /**
@@ -292,9 +292,9 @@ public class CellFocusHandler<T> {
             }
 
             if (newContainer != containerWithFocus) {
-                if (newContainer == this.grid.escalator.getBody()) {
+                if (newContainer == this.grid.getEscalator().getBody()) {
                     newRow = lastFocusedBodyRow;
-                } else if (newContainer == this.grid.escalator.getHeader()) {
+                } else if (newContainer == this.grid.getEscalator().getHeader()) {
                     newRow = lastFocusedHeaderRow;
                 } else {
                     newRow = lastFocusedFooterRow;
@@ -304,7 +304,7 @@ public class CellFocusHandler<T> {
 
                 if (newContainer == containerWithFocus) {
                     newRow = 0;
-                } else if (newContainer == this.grid.escalator.getBody()) {
+                } else if (newContainer == this.grid.getEscalator().getBody()) {
                     newRow = this.grid.getLastVisibleRowIndex();
                 } else {
                     newRow = newContainer.getRowCount() - 1;
@@ -314,7 +314,7 @@ public class CellFocusHandler<T> {
 
                 if (newContainer == containerWithFocus) {
                     newRow = containerWithFocus.getRowCount() - 1;
-                } else if (newContainer == this.grid.escalator.getBody()) {
+                } else if (newContainer == this.grid.getEscalator().getBody()) {
                     newRow = this.grid.getFirstVisibleRowIndex();
                 } else {
                     newRow = 0;
@@ -338,10 +338,10 @@ public class CellFocusHandler<T> {
     }
 
     private RowContainer getPreviousContainer(RowContainer current) {
-        if (current == this.grid.escalator.getFooter()) {
-            current = this.grid.escalator.getBody();
-        } else if (current == this.grid.escalator.getBody()) {
-            current = this.grid.escalator.getHeader();
+        if (current == this.grid.getEscalator().getFooter()) {
+            current = this.grid.getEscalator().getBody();
+        } else if (current == this.grid.getEscalator().getBody()) {
+            current = this.grid.getEscalator().getHeader();
         } else {
             return current;
         }
@@ -353,10 +353,10 @@ public class CellFocusHandler<T> {
     }
 
     private RowContainer getNextContainer(RowContainer current) {
-        if (current == this.grid.escalator.getHeader()) {
-            current = this.grid.escalator.getBody();
-        } else if (current == this.grid.escalator.getBody()) {
-            current = this.grid.escalator.getFooter();
+        if (current == this.grid.getEscalator().getHeader()) {
+            current = this.grid.getEscalator().getBody();
+        } else if (current == this.grid.getEscalator().getBody()) {
+            current = this.grid.getEscalator().getFooter();
         } else {
             return current;
         }
@@ -390,11 +390,11 @@ public class CellFocusHandler<T> {
      *            a range of added rows
      */
     public void rowsAddedToBody(Range added) {
-        boolean bodyHasFocus = (containerWithFocus == this.grid.escalator.getBody());
+        boolean bodyHasFocus = (containerWithFocus == this.grid.getEscalator().getBody());
         boolean insertionIsAboveFocusedCell = (added.getStart() <= rowWithFocus);
         if (bodyHasFocus && insertionIsAboveFocusedCell) {
             rowWithFocus += added.length();
-            rowWithFocus = Math.min(rowWithFocus, this.grid.escalator.getBody()
+            rowWithFocus = Math.min(rowWithFocus, this.grid.getEscalator().getBody()
                     .getRowCount() - 1);
             refreshRow(rowWithFocus);
         }
@@ -409,7 +409,7 @@ public class CellFocusHandler<T> {
      *            a range of removed rows
      */
     public void rowsRemovedFromBody(Range removed) {
-        if (containerWithFocus != this.grid.escalator.getBody()) {
+        if (containerWithFocus != this.grid.getEscalator().getBody()) {
             return;
         } else if (!removed.contains(rowWithFocus)) {
             if (removed.getStart() > rowWithFocus) {
@@ -422,14 +422,14 @@ public class CellFocusHandler<T> {
             } else if (removed.getStart() > 0) {
                 rowWithFocus = removed.getStart() - 1;
             } else {
-                if (this.grid.escalator.getHeader().getRowCount() > 0) {
-                    rowWithFocus = Math.min(lastFocusedHeaderRow, this.grid.escalator
+                if (this.grid.getEscalator().getHeader().getRowCount() > 0) {
+                    rowWithFocus = Math.min(lastFocusedHeaderRow, this.grid.getEscalator()
                             .getHeader().getRowCount() - 1);
-                    containerWithFocus = this.grid.escalator.getHeader();
-                } else if (this.grid.escalator.getFooter().getRowCount() > 0) {
-                    rowWithFocus = Math.min(lastFocusedFooterRow, this.grid.escalator
+                    containerWithFocus = this.grid.getEscalator().getHeader();
+                } else if (this.grid.getEscalator().getFooter().getRowCount() > 0) {
+                    rowWithFocus = Math.min(lastFocusedFooterRow, this.grid.getEscalator()
                             .getFooter().getRowCount() - 1);
-                    containerWithFocus = this.grid.escalator.getFooter();
+                    containerWithFocus = this.grid.getEscalator().getFooter();
                 }
             }
         }

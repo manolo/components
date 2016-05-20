@@ -145,7 +145,7 @@ class BodyUpdater<T> implements EscalatorUpdater {
                     + cell.getColumn() + "," + cell.getRow() + ")";
 
             grid.cellFocusHandler.updateFocusedCellStyle(cell,
-                    grid.escalator.getBody());
+                    grid.getEscalator().getBody());
 
             if (hasData && grid.cellStyleGenerator != null) {
                 try {

@@ -209,7 +209,7 @@ public class Grid<T> extends ResizeComposite implements
     /**
      * Escalator used internally by grid to render the rows
      */
-    public Escalator escalator = GWT.create(Escalator.class);
+    private Escalator escalator = GWT.create(Escalator.class);
 
     final Header header = GWT.create(Header.class);
 
@@ -1027,22 +1027,30 @@ public class Grid<T> extends ResizeComposite implements
     /**
      * Refreshes all header rows
      */
-    void refreshHeader() {
+    public void refreshHeader() {
         refreshRowContainer(escalator.getHeader(), header);
     }
 
     /**
      * Refreshes all body rows
      */
-    void refreshBody() {
+    public void refreshBody() {
         escalator.getBody().refreshRows(0, escalator.getBody().getRowCount());
     }
 
     /**
      * Refreshes all footer rows
      */
-    void refreshFooter() {
+    public void refreshFooter() {
         refreshRowContainer(escalator.getFooter(), footer);
+    }
+    
+    public void refreshStaticSection(StaticCell cell) {
+        if (cell instanceof com.vaadin.client.widgets.grid.Header.HeaderCell) {
+            refreshHeader();
+        } else {
+            refreshFooter();
+        }
     }
 
     /**
@@ -1559,7 +1567,7 @@ public class Grid<T> extends ResizeComposite implements
         return editor;
     }
 
-    protected Escalator getEscalator() {
+    public Escalator getEscalator() {
         return escalator;
     }
 

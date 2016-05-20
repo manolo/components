@@ -127,7 +127,7 @@ class StaticSectionUpdater<T> implements EscalatorUpdater {
                             public void onStart() {
                                 initialWidth = col.getWidthActual();
 
-                                minCellWidth = StaticSectionUpdater.this.grid.escalator
+                                minCellWidth = StaticSectionUpdater.this.grid.getEscalator()
                                         .getMinCellWidth(StaticSectionUpdater.this.grid.getColumns()
                                                 .indexOf(col));
                                 for (Column<?, T> c : StaticSectionUpdater.this.grid.getColumns()) {
@@ -225,10 +225,10 @@ class StaticSectionUpdater<T> implements EscalatorUpdater {
      */
     private void verifyColumnWidth(Column<?, T> column) {
         int colIndex = this.grid.getColumns().indexOf(column);
-        double minWidth = this.grid.escalator.getMinCellWidth(colIndex);
+        double minWidth = this.grid.getEscalator().getMinCellWidth(colIndex);
         if (column.getWidthActual() < minWidth) {
             // Fix column size
-            this.grid.escalator.getColumnConfiguration().setColumnWidth(colIndex,
+            this.grid.getEscalator().getColumnConfiguration().setColumnWidth(colIndex,
                     minWidth);
 
             this.grid.fireEvent(new ColumnResizeEvent<T>(column));

@@ -1,23 +1,16 @@
 package com.vaadin.elements.grid;
 
-import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
-import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.dom.client.TableSectionElement;
 import com.google.gwt.query.client.GQuery;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.RootPanel;
 
 import com.vaadin.client.BrowserInfo;
 import com.vaadin.client.WidgetUtil;
 import com.vaadin.client.widget.grid.selection.SelectionModelMulti;
 import com.vaadin.client.widgets.Overlay;
-import com.vaadin.client.widgets.escalator.Escalator;
-import com.vaadin.client.widgets.grid.Column;
 import com.vaadin.client.widgets.grid.Grid;
-import com.vaadin.client.widgets.grid.StaticCell;
 
 public class ViolatedGrid extends Grid<Object> {
 
@@ -48,11 +41,6 @@ public class ViolatedGrid extends Grid<Object> {
 
     public ViolatedGrid() {
         super();
-        // This is needed for detecting the correct native scrollbar size in
-        // (OS X) Chrome [https://github.com/vaadin/vaadin-grid/issues/30]
-        if (BrowserInfo.get().isChrome()) {
-            setWidgetUtilNativeScrollbarSize(getWidgetUtilNativeScrollbarSize());
-        }
 
         if (WidgetUtil.getNativeScrollbarSize() == 0) {
             // "invisible" scrollbars
@@ -76,29 +64,6 @@ public class ViolatedGrid extends Grid<Object> {
                 // Fix for [https://github.com/vaadin/vaadin-grid/issues/29]
                 GQuery.$(".vaadin-grid-scroller", this).attr("invisible", "");
             }
-        }
-    }
-
-    @Override
-    public Escalator getEscalator() {
-        return super.getEscalator();
-    }
-
-    public native boolean refreshHeader()
-    /*-{
-        this.@com.vaadin.client.widgets.grid.Grid::refreshHeader()();
-    }-*/;
-
-    public native boolean refreshFooter()
-    /*-{
-      this.@com.vaadin.client.widgets.grid.Grid::refreshFooter()();
-    }-*/;
-
-    public void refreshStaticSection(StaticCell cell) {
-        if (cell instanceof com.vaadin.client.widgets.grid.Header.HeaderCell) {
-            refreshHeader();
-        } else {
-            refreshFooter();
         }
     }
 
@@ -128,31 +93,7 @@ public class ViolatedGrid extends Grid<Object> {
         setHeight(headerHeight + bodyHeight + footerHeight + "px");
     }
 
-    private static native void setWidgetUtilNativeScrollbarSize(int size)
-    /*-{
-      @com.vaadin.client.WidgetUtil::detectedScrollbarSize = size;
-    }-*/;
 
-    private static int getWidgetUtilNativeScrollbarSize() {
-        // Using an iFrame to calculate the native scrollbar size
-        IFrameElement iFrame = IFrameElement.as(DOM.createIFrame());
-        iFrame.getStyle().setProperty("position", "absolute");
-        iFrame.getStyle().setProperty("marginLeft", "-5000px");
-        RootPanel.getBodyElement().appendChild(iFrame);
-        Document contentDocument = iFrame.getContentDocument();
-
-        Element scroller = contentDocument.createElement("div");
-        scroller.getStyle().setProperty("width", "50px");
-        scroller.getStyle().setProperty("height", "50px");
-        scroller.getStyle().setProperty("overflow", "scroll");
-        contentDocument.getBody().appendChild(scroller);
-
-        int detectedScrollbarSize = scroller.getOffsetWidth()
-                - scroller.getPropertyInt("clientWidth");
-        RootPanel.getBodyElement().removeChild(iFrame);
-
-        return detectedScrollbarSize;
-    }
 
     @Override
     public void onBrowserEvent(Event event) {

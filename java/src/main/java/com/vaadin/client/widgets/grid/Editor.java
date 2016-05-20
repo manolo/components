@@ -744,7 +744,7 @@ public class Editor<T> implements DeferredWorker {
         }
 
         // Do not render over the vertical scrollbar
-        editorOverlay.getStyle().setWidth(grid.escalator.getInnerWidth(),
+        editorOverlay.getStyle().setWidth(grid.getEscalator().getInnerWidth(),
                 Unit.PX);
     }
 
@@ -766,7 +766,7 @@ public class Editor<T> implements DeferredWorker {
     }
 
     private boolean buttonsShouldBeRenderedBelow(TableRowElement tr) {
-        TableSectionElement tfoot = grid.escalator.getFooter().getElement();
+        TableSectionElement tfoot = grid.getEscalator().getFooter().getElement();
         double tfootPageTop = WidgetUtil.getBoundingClientRect(tfoot)
                 .getTop();
         double trPageBottom = WidgetUtil.getBoundingClientRect(tr)
