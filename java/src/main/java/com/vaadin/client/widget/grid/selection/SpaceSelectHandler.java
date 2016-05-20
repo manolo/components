@@ -17,13 +17,14 @@ package com.vaadin.client.widget.grid.selection;
 
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.vaadin.client.widget.grid.DataAvailableEvent;
-import com.vaadin.client.widget.grid.DataAvailableHandler;
+
 import com.vaadin.client.widget.grid.events.BodyKeyDownHandler;
 import com.vaadin.client.widget.grid.events.BodyKeyUpHandler;
+import com.vaadin.client.widget.grid.events.DataAvailableEvent;
+import com.vaadin.client.widget.grid.events.DataAvailableHandler;
 import com.vaadin.client.widget.grid.events.GridKeyDownEvent;
 import com.vaadin.client.widget.grid.events.GridKeyUpEvent;
-import com.vaadin.client.widgets.Grid;
+import com.vaadin.client.widgets.grid.Grid;
 import com.vaadin.shared.ui.grid.ScrollDestination;
 
 /**

@@ -16,7 +16,9 @@
 package com.vaadin.client.widget.grid;
 
 import com.google.gwt.dom.client.TableCellElement;
-import com.vaadin.client.widgets.Grid;
+
+import com.vaadin.client.widgets.grid.Column;
+import com.vaadin.client.widgets.grid.Grid;
 
 /**
  * A data class which contains information which identifies a cell in a
@@ -35,7 +37,7 @@ public class CellReference<T> {
 
     private int columnIndexDOM;
     private int columnIndex;
-    private Grid.Column<?, T> column;
+    private Column<?, T> column;
     private final RowReference<T> rowReference;
 
     public CellReference(RowReference<T> rowReference) {
@@ -56,7 +58,7 @@ public class CellReference<T> {
      *            the column object
      */
     public void set(int columnIndexDOM, int columnIndex,
-            Grid.Column<?, T> column) {
+            Column<?, T> column) {
         this.columnIndexDOM = columnIndexDOM;
         this.columnIndex = columnIndex;
         this.column = column;
@@ -117,7 +119,7 @@ public class CellReference<T> {
      * 
      * @return the column object
      */
-    public Grid.Column<?, T> getColumn() {
+    public Column<?, T> getColumn() {
         return column;
     }
 

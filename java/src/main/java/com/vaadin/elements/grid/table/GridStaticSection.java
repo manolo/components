@@ -1,19 +1,19 @@
 package com.vaadin.elements.grid.table;
 
+import com.vaadin.client.widgets.grid.StaticCell;
+import com.vaadin.client.widgets.grid.StaticSection.StaticRow;
+import com.vaadin.elements.common.js.JS;
+import com.vaadin.elements.common.js.JSArray;
+import com.vaadin.elements.grid.GridElement;
+import com.vaadin.elements.grid.ViolatedGrid;
+import com.vaadin.elements.grid.config.JSStaticCell;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import jsinterop.annotations.JsIgnore;
 import jsinterop.annotations.JsType;
-
-import com.vaadin.client.widgets.Grid.StaticSection.StaticCell;
-import com.vaadin.client.widgets.Grid.StaticSection.StaticRow;
-import com.vaadin.elements.common.js.JS;
-import com.vaadin.elements.common.js.JSArray;
-import com.vaadin.elements.grid.GridElement;
-import com.vaadin.elements.grid.ViolatedGrid;
-import com.vaadin.elements.grid.config.JSStaticCell;
 
 @JsType(namespace = JS.NAMESPACE_API)
 public class GridStaticSection {

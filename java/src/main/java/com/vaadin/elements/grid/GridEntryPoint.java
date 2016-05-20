@@ -32,17 +32,17 @@ public class GridEntryPoint implements EntryPoint {
     // with multiple properties like `user.agent` and `modernie`, and then
     // collapsing all in a single permutation.
     // TODO(manolo): This is probably a bug in the linker (report to GWT)
-    private native static Object checkPermutation(String ua) /*-{
-       var i = @com.google.gwt.dom.client.DOMImpl::impl;
-       i = i.@com.google.gwt.dom.client.DOMImpl::getClass()();
-
-       var c = ua == 'safari' ? @com.google.gwt.dom.client.DOMImplWebkit::class :
-         ua == 'gecko1_8' ? @com.google.gwt.dom.client.DOMImplWebkit::class : 'unknown';
-
-       if (i != c) {
-         $wnd.console.error("VaadinGrid: wrong permutation selected for UA=" + ua);
-       }
-    }-*/;
+//    private native static Object checkPermutation(String ua) /*-{
+//       var i = @com.google.gwt.dom.client.DOMImpl::impl;
+//       i = i.@com.google.gwt.dom.client.DOMImpl::getClass()();
+//
+//       var c = ua == 'safari' ? @com.google.gwt.dom.client.DOMImplWebkit::class :
+//         ua == 'gecko1_8' ? @com.google.gwt.dom.client.DOMImplWebkit::class : 'unknown';
+//
+//       if (i != c) {
+//         $wnd.console.error("VaadinGrid: wrong permutation selected for UA=" + ua);
+//       }
+//    }-*/;
     
     // We don't expose constructors exported under the _api namespace.
     private static native void removePrivateApi() /*-{

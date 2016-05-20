@@ -24,7 +24,7 @@ import java.util.Set;
 
 import com.vaadin.client.data.DataSource.RowHandle;
 import com.vaadin.client.renderers.Renderer;
-import com.vaadin.client.widgets.Grid;
+import com.vaadin.client.widgets.grid.Grid;
 
 /**
  * Multi-row selection model.

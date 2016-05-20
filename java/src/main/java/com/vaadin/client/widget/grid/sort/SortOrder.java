@@ -15,7 +15,7 @@
  */
 package com.vaadin.client.widget.grid.sort;
 
-import com.vaadin.client.widgets.Grid;
+import com.vaadin.client.widgets.grid.Column;
 import com.vaadin.shared.data.sort.SortDirection;
 
 /**
@@ -26,7 +26,7 @@ import com.vaadin.shared.data.sort.SortDirection;
  */
 public class SortOrder {
 
-    private final Grid.Column<?, ?> column;
+    private final Column<?, ?> column;
     private final SortDirection direction;
 
     /**
@@ -36,7 +36,7 @@ public class SortOrder {
      * @param column
      *            a grid column descriptor object
      */
-    public SortOrder(Grid.Column<?, ?> column) {
+    public SortOrder(Column<?, ?> column) {
         this(column, SortDirection.ASCENDING);
     }
 
@@ -48,7 +48,7 @@ public class SortOrder {
      * @param direction
      *            a sorting direction value (ascending or descending)
      */
-    public SortOrder(Grid.Column<?, ?> column, SortDirection direction) {
+    public SortOrder(Column<?, ?> column, SortDirection direction) {
         if (column == null) {
             throw new IllegalArgumentException(
                     "Grid column reference can not be null!");
@@ -66,7 +66,7 @@ public class SortOrder {
      * 
      * @return a grid column reference
      */
-    public Grid.Column<?, ?> getColumn() {
+    public Column<?, ?> getColumn() {
         return column;
     }
 

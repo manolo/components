@@ -13,9 +13,11 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.vaadin.client.BrowserInfo;
 import com.vaadin.client.WidgetUtil;
 import com.vaadin.client.widget.grid.selection.SelectionModelMulti;
-import com.vaadin.client.widgets.Escalator;
-import com.vaadin.client.widgets.Grid;
 import com.vaadin.client.widgets.Overlay;
+import com.vaadin.client.widgets.escalator.Escalator;
+import com.vaadin.client.widgets.grid.Column;
+import com.vaadin.client.widgets.grid.Grid;
+import com.vaadin.client.widgets.grid.StaticCell;
 
 public class ViolatedGrid extends Grid<Object> {
 
@@ -84,16 +86,16 @@ public class ViolatedGrid extends Grid<Object> {
 
     public native boolean refreshHeader()
     /*-{
-        this.@com.vaadin.client.widgets.Grid::refreshHeader()();
+        this.@com.vaadin.client.widgets.grid.Grid::refreshHeader()();
     }-*/;
 
     public native boolean refreshFooter()
     /*-{
-      this.@com.vaadin.client.widgets.Grid::refreshFooter()();
+      this.@com.vaadin.client.widgets.grid.Grid::refreshFooter()();
     }-*/;
 
-    public void refreshStaticSection(StaticSection.StaticCell cell) {
-        if (cell instanceof HeaderCell) {
+    public void refreshStaticSection(StaticCell cell) {
+        if (cell instanceof com.vaadin.client.widgets.grid.Header.HeaderCell) {
             refreshHeader();
         } else {
             refreshFooter();
@@ -189,7 +191,7 @@ public class ViolatedGrid extends Grid<Object> {
 
     @Override
     public void removeColumn(
-            com.vaadin.client.widgets.Grid.Column<?, Object> column) {
+            com.vaadin.client.widgets.grid.Column<?, Object> column) {
         int initialFrozenColumnCount = getFrozenColumnCount();
         int maxFrozenColumnCount = getColumnCount() - 1;
         if (getSelectionModel() instanceof SelectionModelMulti) {

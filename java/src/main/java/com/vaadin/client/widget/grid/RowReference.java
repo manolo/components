@@ -16,7 +16,8 @@
 package com.vaadin.client.widget.grid;
 
 import com.google.gwt.dom.client.TableRowElement;
-import com.vaadin.client.widgets.Grid;
+
+import com.vaadin.client.widgets.grid.Grid;
 
 /**
  * A data class which contains information which identifies a row in a

@@ -16,7 +16,6 @@
 package com.vaadin.client.widget.grid.events;
 
 import com.google.gwt.event.shared.EventHandler;
-import com.vaadin.client.widgets.Grid.AbstractGridKeyEvent;
 
 /**
  * Base interface of all handlers for {@link AbstractGridKeyEvent}s.

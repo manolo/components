@@ -18,7 +18,7 @@ package com.vaadin.client.widget.grid.sort;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.vaadin.client.widgets.Grid;
+import com.vaadin.client.widgets.grid.Column;
 import com.vaadin.shared.data.sort.SortDirection;
 
 /**
@@ -42,7 +42,7 @@ public class Sort {
      * @param direction
      *            a sort direction
      */
-    private Sort(Grid.Column<?, ?> column, SortDirection direction) {
+    private Sort(Column<?, ?> column, SortDirection direction) {
         previous = null;
         count = 1;
         order = new SortOrder(column, direction);
@@ -62,7 +62,7 @@ public class Sort {
      * @param direction
      *            a sort direction
      */
-    private Sort(Sort previous, Grid.Column<?, ?> column,
+    private Sort(Sort previous, Column<?, ?> column,
             SortDirection direction) {
         this.previous = previous;
         count = previous.count + 1;
@@ -86,7 +86,7 @@ public class Sort {
      *            a grid column object reference
      * @return a sort instance, typed to the grid data type
      */
-    public static Sort by(Grid.Column<?, ?> column) {
+    public static Sort by(Column<?, ?> column) {
         return by(column, SortDirection.ASCENDING);
     }
 
@@ -99,7 +99,7 @@ public class Sort {
      *            indicator of sort direction - either ascending or descending
      * @return a sort instance, typed to the grid data type
      */
-    public static Sort by(Grid.Column<?, ?> column, SortDirection direction) {
+    public static Sort by(Column<?, ?> column, SortDirection direction) {
         return new Sort(column, direction);
     }
 
@@ -112,7 +112,7 @@ public class Sort {
      *            a grid column object reference
      * @return a sort instance, typed to the grid data type
      */
-    public Sort then(Grid.Column<?, ?> column) {
+    public Sort then(Column<?, ?> column) {
         return then(column, SortDirection.ASCENDING);
     }
 
@@ -127,7 +127,7 @@ public class Sort {
      *            indicator of sort direction - either ascending or descending
      * @return a sort instance, typed to the grid data type
      */
-    public Sort then(Grid.Column<?, ?> column, SortDirection direction) {
+    public Sort then(Column<?, ?> column, SortDirection direction) {
         return new Sort(this, column, direction);
     }
 

@@ -1,19 +1,21 @@
 package com.vaadin.elements.grid.config;
 
-import static com.vaadin.shared.ui.grid.GridStaticCellType.HTML;
-import static com.vaadin.shared.ui.grid.GridStaticCellType.WIDGET;
-import jsinterop.annotations.JsIgnore;
-import jsinterop.annotations.JsProperty;
-import jsinterop.annotations.JsType;
-
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.js.JsUtils;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.vaadin.client.widgets.Grid.StaticSection.StaticCell;
+
+import static com.vaadin.shared.ui.grid.GridStaticCellType.HTML;
+import static com.vaadin.shared.ui.grid.GridStaticCellType.WIDGET;
+
+import com.vaadin.client.widgets.grid.StaticCell;
 import com.vaadin.elements.common.js.JS;
 import com.vaadin.elements.grid.GridElement;
 import com.vaadin.elements.grid.table.GridColumn;
 import com.vaadin.shared.util.SharedUtil;
+
+import jsinterop.annotations.JsIgnore;
+import jsinterop.annotations.JsProperty;
+import jsinterop.annotations.JsType;
 
 /**
  * This class is a JsInterop wrapper for the JS object representing a grid

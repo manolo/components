@@ -25,7 +25,8 @@ import com.vaadin.client.data.DataSource;
 import com.vaadin.client.widget.grid.sort.SortEvent;
 import com.vaadin.client.widget.grid.sort.SortHandler;
 import com.vaadin.client.widget.grid.sort.SortOrder;
-import com.vaadin.client.widgets.Grid;
+import com.vaadin.client.widgets.grid.Column;
+import com.vaadin.client.widgets.grid.Grid;
 import com.vaadin.shared.data.sort.SortDirection;
 
 /**
@@ -40,7 +41,7 @@ import com.vaadin.shared.data.sort.SortDirection;
 public class ListSorter<T> {
 
     private Grid<T> grid;
-    private Map<Grid.Column<?, T>, Comparator<?>> comparators;
+    private Map<Column<?, T>, Comparator<?>> comparators;
     private HandlerRegistration sortHandlerRegistration;
 
     public ListSorter(Grid<T> grid) {
@@ -50,7 +51,7 @@ public class ListSorter<T> {
         }
 
         this.grid = grid;
-        comparators = new HashMap<Grid.Column<?, T>, Comparator<?>>();
+        comparators = new HashMap<Column<?, T>, Comparator<?>>();
 
         sortHandlerRegistration = grid.addSortHandler(new SortHandler<T>() {
             @Override
@@ -82,7 +83,7 @@ public class ListSorter<T> {
      *            comparator method for the values returned by the grid column.
      *            If null, any existing comparator is removed.
      */
-    public <C> void setComparator(Grid.Column<C, T> column,
+    public <C> void setComparator(Column<C, T> column,
             Comparator<C> comparator) {
         if (column == null) {
             throw new IllegalArgumentException(
@@ -104,7 +105,7 @@ public class ListSorter<T> {
      *         column has been set.
      */
     @SuppressWarnings("unchecked")
-    public <C> Comparator<C> getComparator(Grid.Column<C, T> column) {
+    public <C> Comparator<C> getComparator(Column<C, T> column) {
         if (column == null) {
             throw new IllegalArgumentException(
                     "Column reference can not be null");
@@ -141,7 +142,7 @@ public class ListSorter<T> {
 
                 for (SortOrder o : order) {
 
-                    Grid.Column column = o.getColumn();
+                    Column column = o.getColumn();
                     Comparator cmp = ListSorter.this.comparators.get(column);
                     int result = 0;
                     Object value_a = column.getValue(a);

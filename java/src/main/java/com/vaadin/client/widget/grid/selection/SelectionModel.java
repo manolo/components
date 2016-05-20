@@ -18,7 +18,7 @@ package com.vaadin.client.widget.grid.selection;
 import java.util.Collection;
 
 import com.vaadin.client.renderers.Renderer;
-import com.vaadin.client.widgets.Grid;
+import com.vaadin.client.widgets.grid.Grid;
 
 /**
  * Common interface for all selection models.

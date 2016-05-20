@@ -27,7 +27,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.vaadin.client.WidgetUtil;
-import com.vaadin.client.widgets.Grid;
+import com.vaadin.client.widgets.grid.Grid;
 
 /**
  * A class for handling automatic scrolling vertically / horizontally in the

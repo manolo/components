@@ -2,12 +2,13 @@ package com.vaadin.elements.grid.selection;
 
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.user.client.ui.CheckBox;
+
 import com.vaadin.client.data.DataSource.RowHandle;
 import com.vaadin.client.renderers.Renderer;
 import com.vaadin.client.widget.grid.selection.MultiSelectionRenderer;
 import com.vaadin.client.widget.grid.selection.SelectionEvent;
 import com.vaadin.client.widget.grid.selection.SelectionModelMulti;
-import com.vaadin.client.widgets.Grid;
+import com.vaadin.client.widgets.grid.Grid;
 import com.vaadin.elements.common.js.JS;
 import com.vaadin.elements.common.js.JSArray;
 import com.vaadin.elements.common.js.JSFunction;

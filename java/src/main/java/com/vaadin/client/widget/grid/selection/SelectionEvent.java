@@ -21,7 +21,8 @@ import java.util.Collections;
 import java.util.List;
 
 import com.google.gwt.event.shared.GwtEvent;
-import com.vaadin.client.widgets.Grid;
+
+import com.vaadin.client.widgets.grid.Grid;
 
 /**
  * Event object describing a change in Grid row selection state.

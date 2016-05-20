@@ -22,26 +22,26 @@ import com.google.gwt.dom.client.TableSectionElement;
 
 /**
  * A representation of the rows in each of the sections (header, body and
- * footer) in an {@link com.vaadin.client.widgets.Escalator}.
+ * footer) in an {@link com.vaadin.client.widgets.escalator.Escalator}.
  * 
  * @since 7.4
  * @author Vaadin Ltd
- * @see com.vaadin.client.widgets.Escalator#getHeader()
- * @see com.vaadin.client.widgets.Escalator#getBody()
- * @see com.vaadin.client.widgets.Escalator#getFooter()
+ * @see com.vaadin.client.widgets.escalator.Escalator#getHeader()
+ * @see com.vaadin.client.widgets.escalator.Escalator#getBody()
+ * @see com.vaadin.client.widgets.escalator.Escalator#getFooter()
  * @see SpacerContainer
  */
 public interface RowContainer {
 
     /**
      * The row container for the body section in an
-     * {@link com.vaadin.client.widgets.Escalator}.
+     * {@link com.vaadin.client.widgets.escalator.Escalator}.
      * <p>
      * The body section can contain both rows and spacers.
      * 
      * @since 7.5.0
      * @author Vaadin Ltd
-     * @see com.vaadin.client.widgets.Escalator#getBody()
+     * @see com.vaadin.client.widgets.escalator.Escalator#getBody()
      */
     public interface BodyRowContainer extends RowContainer {
 

@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.vaadin.client.renderers;
+package com.vaadin.client.widget.grid;
 
 import com.google.gwt.dom.client.BrowserEvents;
 import com.google.gwt.dom.client.Element;
@@ -28,12 +28,11 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.vaadin.client.WidgetUtil;
+import com.vaadin.client.renderers.WidgetRenderer;
 import com.vaadin.client.widget.escalator.Cell;
 import com.vaadin.client.widget.escalator.RowContainer;
-import com.vaadin.client.widget.grid.CellReference;
-import com.vaadin.client.widget.grid.EventCellReference;
-import com.vaadin.client.widgets.Escalator;
-import com.vaadin.client.widgets.Grid;
+import com.vaadin.client.widgets.escalator.Escalator;
+import com.vaadin.client.widgets.grid.Grid;
 import com.vaadin.shared.ui.grid.GridConstants.Section;
 
 /**
@@ -162,7 +161,7 @@ public abstract class ClickableRenderer<T, W extends Widget> extends
 
         private native static Escalator getEscalator(Grid<?> grid)
         /*-{    
-          return grid.@com.vaadin.client.widgets.Grid::escalator;
+          return grid.@com.vaadin.client.widgets.grid.Grid::escalator;
         }-*/;
 
         /**

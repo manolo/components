@@ -2,7 +2,7 @@ package com.vaadin.elements.grid.selection;
 
 import com.vaadin.client.widget.grid.selection.SelectionEvent;
 import com.vaadin.client.widget.grid.selection.SelectionModelSingle;
-import com.vaadin.client.widgets.Grid;
+import com.vaadin.client.widgets.grid.Grid;
 import com.vaadin.elements.common.js.JS;
 import com.vaadin.elements.common.js.JSArray;
 import com.vaadin.elements.common.js.JSFunction;

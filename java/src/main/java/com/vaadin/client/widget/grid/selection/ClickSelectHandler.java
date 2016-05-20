@@ -18,7 +18,7 @@ package com.vaadin.client.widget.grid.selection;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.vaadin.client.widget.grid.events.BodyClickHandler;
 import com.vaadin.client.widget.grid.events.GridClickEvent;
-import com.vaadin.client.widgets.Grid;
+import com.vaadin.client.widgets.grid.Grid;
 
 /**
  * Generic class to perform selections when clicking on cells in body of Grid.

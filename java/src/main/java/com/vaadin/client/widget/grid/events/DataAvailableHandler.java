@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.vaadin.client.widget.grid;
+package com.vaadin.client.widget.grid.events;
 
 import com.google.gwt.event.shared.EventHandler;
 

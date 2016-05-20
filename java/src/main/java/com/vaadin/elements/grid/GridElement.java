@@ -19,8 +19,8 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 
-import com.vaadin.client.widget.grid.DataAvailableEvent;
 import com.vaadin.client.widget.grid.DetailsGenerator;
+import com.vaadin.client.widget.grid.events.DataAvailableEvent;
 import com.vaadin.client.widget.grid.events.SelectAllEvent;
 import com.vaadin.client.widget.grid.events.SelectAllHandler;
 import com.vaadin.client.widget.grid.selection.SelectionEvent;
@@ -29,7 +29,7 @@ import com.vaadin.client.widget.grid.selection.SelectionModel;
 import com.vaadin.client.widget.grid.sort.SortEvent;
 import com.vaadin.client.widget.grid.sort.SortHandler;
 import com.vaadin.client.widget.grid.sort.SortOrder;
-import com.vaadin.client.widgets.Grid.Column;
+import com.vaadin.client.widgets.grid.Column;
 import com.vaadin.elements.common.js.JS;
 import com.vaadin.elements.common.js.JSArray;
 import com.vaadin.elements.common.js.JSEnums;

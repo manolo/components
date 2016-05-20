@@ -21,7 +21,7 @@ import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.dom.client.TableCellElement;
 import com.vaadin.client.widget.escalator.FlyweightRow.CellIterator;
-import com.vaadin.client.widgets.Escalator;
+import com.vaadin.client.widgets.escalator.Escalator;
 
 /**
  * A {@link FlyweightCell} represents a cell in the {@link Grid} or

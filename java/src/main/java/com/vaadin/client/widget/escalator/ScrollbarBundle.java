@@ -733,7 +733,7 @@ public abstract class ScrollbarBundle implements DeferredWorker {
      * This is a method that JSNI can call to synchronize the object state from
      * the DOM.
      */
-    private final void updateScrollPosFromDom() {
+    public final void updateScrollPosFromDom() {
 
         /*
          * TODO: this method probably shouldn't be called from Escalator's JSNI,

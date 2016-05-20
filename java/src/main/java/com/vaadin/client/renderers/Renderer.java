@@ -17,7 +17,7 @@ package com.vaadin.client.renderers;
 
 import com.vaadin.client.widget.escalator.Cell;
 import com.vaadin.client.widget.grid.RendererCellReference;
-import com.vaadin.client.widgets.Grid;
+import com.vaadin.client.widgets.grid.Grid;
 
 /**
  * Renderer for rending a value &lt;T&gt; into cell.

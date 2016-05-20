@@ -16,9 +16,6 @@
 
 package com.vaadin.client.widgets;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gwt.animation.client.Animation;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -32,12 +29,11 @@ import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
-import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+
 import com.vaadin.client.AnimationUtil;
 import com.vaadin.client.AnimationUtil.AnimationEndListener;
 import com.vaadin.client.BrowserInfo;
@@ -51,29 +47,12 @@ import com.vaadin.client.WidgetUtil;
  * <b>Note:</b> This class should always be constructed with
  * {@link GWT#create(Class)}.
  * 
- * <h3>Shadow</h3>
- * <p>
- * The separate shadow element underneath the main overlay element is <strong>
- * <em>deprecated</em></strong>, and should not be used for new overlay
- * components. CSS box-shadow should be used instead of a separate shadow
- * element. Remember to include any vendor-prefixed versions to support all
- * browsers that you need to. To cover all possible browsers that Vaadin 7
- * supports, add <code>-webkit-box-shadow</code> and the standard
- * <code>box-shadow</code> properties.
- * </p>
- * 
  * <p>
  * For IE8, which doesn't support CSS box-shadow, you can use the proprietary
  * DropShadow filter. It doesn't provide the exact same features as box-shadow,
  * but it is suitable for graceful degradation. Other options are to use a
  * border or a pseudo-element underneath the overlay which mimics a shadow, or
  * any combination of these.
- * </p>
- * 
- * <p>
- * Read more about the DropShadow filter from <a
- * href="http://msdn.microsoft.com/en-us/library/ms532985(v=vs.85).aspx"
- * >Microsoft Developer Network</a>
  * </p>
  * 
  * @since 7.6.1
@@ -162,16 +141,6 @@ public class Overlay extends PopupPanel implements CloseHandler<PopupPanel> {
     private static int topFix = -1;
 
     /**
-     * Shadow element style. If an extending class wishes to use a different
-     * style of shadow, it can use setShadowStyle(String) to give the shadow
-     * element a new style name.
-     * 
-     * @deprecated See main JavaDoc for Overlay
-     */
-    @Deprecated
-    public static final String CLASSNAME_SHADOW = "v-shadow";
-
-    /**
      * Style name for the overlay container element (see
      * {@link #getOverlayContainer()}
      */
@@ -186,15 +155,6 @@ public class Overlay extends PopupPanel implements CloseHandler<PopupPanel> {
      */
     public static final String ADDITIONAL_CLASSNAME_ANIMATE_OUT = "animate-out";
 
-    /**
-     * The shadow element for this overlay.
-     * 
-     * @deprecated See main JavaDoc for Overlay
-     * 
-     */
-    @Deprecated
-    private Element shadow;
-
     /*
      * The creator of this Overlay (the widget that made the instance, not the
      * layout parent)
@@ -208,41 +168,9 @@ public class Overlay extends PopupPanel implements CloseHandler<PopupPanel> {
     private IFrameElement shimElement;
 
     /**
-     * The HTML snippet that is used to render the actual shadow. In consists of
-     * nine different DIV-elements with the following class names:
-     * 
-     * <pre>
-     *   .v-shadow[-stylename]
-     *   ----------------------------------------------
-     *   | .top-left     |   .top    |     .top-right |
-     *   |---------------|-----------|----------------|
-     *   |               |           |                |
-     *   | .left         |  .center  |         .right |
-     *   |               |           |                |
-     *   |---------------|-----------|----------------|
-     *   | .bottom-left  |  .bottom  |  .bottom-right |
-     *   ----------------------------------------------
-     * </pre>
-     * 
-     * See default theme 'shadow.css' for implementation example.
-     * 
-     * @deprecated See main JavaDoc for Overlay
-     */
-    @Deprecated
-    private static final String SHADOW_HTML = "<div aria-hidden=\"true\" class=\"top-left\"></div><div class=\"top\"></div><div class=\"top-right\"></div><div class=\"left\"></div><div class=\"center\"></div><div class=\"right\"></div><div class=\"bottom-left\"></div><div class=\"bottom\"></div><div class=\"bottom-right\"></div>";
-
-    /**
      * Matches {@link PopupPanel}.ANIMATION_DURATION
      */
     private static final int POPUP_PANEL_ANIMATION_DURATION = 200;
-
-    /**
-     * @deprecated See main JavaDoc for Overlay
-     */
-    @Deprecated
-    private boolean sinkShadowEvents = false;
-
-    private List<Command> runOnClose = new ArrayList<Command>();
 
     public Overlay() {
         super();
@@ -259,65 +187,6 @@ public class Overlay extends PopupPanel implements CloseHandler<PopupPanel> {
         adjustZIndex();
     }
 
-    /**
-     * @deprecated See main JavaDoc for Overlay. Use the other constructors
-     *             without the <code>showShadow</code> parameter.
-     */
-    @Deprecated
-    public Overlay(boolean autoHide, boolean modal, boolean showShadow) {
-        super(autoHide, modal);
-        setShadowEnabled(showShadow && useShadowDiv());
-        adjustZIndex();
-    }
-
-    /**
-     * Return true if a separate shadow div should be used. Since Vaadin 7.3,
-     * shadows are implemented with CSS box-shadow. Thus, a shadow div is only
-     * used for IE8 by default.
-     * 
-     * @deprecated See main JavaDoc for Overlay
-     * @since 7.3
-     * @return true to use a shadow div
-     */
-    @Deprecated
-    protected boolean useShadowDiv() {
-        return BrowserInfo.get().isIE8();
-    }
-
-    /**
-     * Method to control whether DOM elements for shadow are added. With this
-     * method subclasses can control displaying of shadow also after the
-     * constructor.
-     * 
-     * @param enabled
-     *            true if shadow should be displayed
-     * 
-     * @deprecated See main JavaDoc for Overlay
-     */
-    @Deprecated
-    protected void setShadowEnabled(boolean enabled) {
-        if (enabled != isShadowEnabled()) {
-            if (enabled) {
-                shadow = DOM.createDiv();
-                shadow.setClassName(CLASSNAME_SHADOW);
-                shadow.setInnerHTML(SHADOW_HTML);
-                shadow.getStyle().setPosition(Position.ABSOLUTE);
-                addCloseHandler(this);
-            } else {
-                removeShadowIfPresent();
-                shadow = null;
-            }
-        }
-    }
-
-    /**
-     * @deprecated See main JavaDoc for Overlay
-     */
-    @Deprecated
-    protected boolean isShadowEnabled() {
-        return shadow != null;
-    }
-
     protected boolean isShimElementEnabled() {
         return shimElement != null;
     }
@@ -326,27 +195,6 @@ public class Overlay extends PopupPanel implements CloseHandler<PopupPanel> {
         if (shimElement != null) {
             shimElement.removeFromParent();
         }
-    }
-
-    /**
-     * @deprecated See main JavaDoc for Overlay
-     */
-    @Deprecated
-    private void removeShadowIfPresent() {
-        if (isShadowAttached()) {
-            // Remove event listener from the shadow
-            unsinkShadowEvents();
-
-            shadow.removeFromParent();
-        }
-    }
-
-    /**
-     * @deprecated See main JavaDoc for Overlay
-     */
-    @Deprecated
-    private boolean isShadowAttached() {
-        return isShadowEnabled() && shadow.getParentElement() != null;
     }
 
     private void adjustZIndex() {
@@ -361,65 +209,10 @@ public class Overlay extends PopupPanel implements CloseHandler<PopupPanel> {
      */
     protected void setZIndex(int zIndex) {
         getElement().getStyle().setZIndex(zIndex);
-        if (isShadowEnabled()) {
-            shadow.getStyle().setZIndex(zIndex);
-        }
     }
 
     @Override
     public void setPopupPosition(int left, int top) {
-
-        // PopupPanel tries to position the popup on screen (by
-        // default right, below) and will move it if there is not
-        // enough space right or below but only if there is
-        // sufficient space left or above. If the popup is too big
-        // to fit on either side, it will be in the original
-        // position.
-
-        if (isFitInWindow()) {
-            int windowLeft = Window.getScrollLeft();
-            int windowRight = Window.getScrollLeft() + Window.getClientWidth();
-            int width = getOffsetWidth();
-            int popupRight = left + width;
-            int popupRightOfWindow = popupRight - windowRight;
-            if (popupRightOfWindow > 0) {
-                // Popup is too large to fit
-                left -= popupRightOfWindow;
-                if (left < 0) {
-                    // Would move left of screen, shrink to fit in window
-                    setOuterWidthThroughWidget(windowRight - windowLeft);
-                    runOnClose.add(new Command() {
-                        @Override
-                        public void execute() {
-                            getWidget().setWidth("");
-                        }
-                    });
-                    left = 0;
-                }
-            }
-
-            int windowTop = Window.getScrollTop();
-            int windowBottom = Window.getScrollTop() + Window.getClientHeight();
-            int height = getOffsetHeight();
-            int popupBottom = top + height;
-            int popupBelowWindow = popupBottom - windowBottom;
-            if (popupBelowWindow > 0) {
-                // Popup is too large to fit
-                top -= popupBelowWindow;
-                if (top < 0) {
-                    // Would move above screen, shrink to fit in window
-                    setOuterHeightThroughWidget(windowBottom - windowTop);
-                    runOnClose.add(new Command() {
-                        @Override
-                        public void execute() {
-                            getWidget().setHeight("");
-                        }
-                    });
-                    top = 0;
-                }
-            }
-        }
-
         // TODO, this should in fact be part of
         // Document.get().getBodyOffsetLeft/Top(). Would require overriding DOM
         // for all permutations. Now adding fix as margin instead of fixing
@@ -429,30 +222,6 @@ public class Overlay extends PopupPanel implements CloseHandler<PopupPanel> {
         style.setMarginTop(-adjustByRelativeTopBodyMargin(), Unit.PX);
         super.setPopupPosition(left, top);
         positionOrSizeUpdated(isAnimationEnabled() ? 0 : 1);
-    }
-
-    private void setOuterHeightThroughWidget(int outerHeight) {
-        getWidget().setHeight(outerHeight + "px");
-
-        // Take margin/border/padding into account if needed
-        // (the height is for the overlay root but we set it on the
-        // widget)
-        int adjustedHeight = outerHeight - (getOffsetHeight() - outerHeight);
-        if (adjustedHeight != outerHeight) {
-            getWidget().setHeight(adjustedHeight + "px");
-        }
-    }
-
-    private void setOuterWidthThroughWidget(int outerWidth) {
-        getWidget().setWidth(outerWidth + "px");
-
-        // Take margin/border/padding into account if needed
-        // (the height is for the overlay root but we set it on the
-        // widget)
-        int adjustedWidth = outerWidth - (getOffsetWidth() - outerWidth);
-        if (adjustedWidth != outerWidth) {
-            getWidget().setWidth(adjustedWidth + "px");
-        }
     }
 
     private IFrameElement getShimElement() {
@@ -547,8 +316,6 @@ public class Overlay extends PopupPanel implements CloseHandler<PopupPanel> {
 
     private JavaScriptObject animateInListener;
 
-    private boolean fitInWindow = false;
-
     private boolean maybeShowWithAnimation() {
         boolean isAttached = isAttached() && isShowing();
         super.show();
@@ -562,10 +329,6 @@ public class Overlay extends PopupPanel implements CloseHandler<PopupPanel> {
             // Check if animations are used
             setVisible(false);
             addStyleDependentName(ADDITIONAL_CLASSNAME_ANIMATE_IN);
-            if (isShadowEnabled()) {
-                shadow.addClassName(CLASSNAME_SHADOW + "-"
-                        + ADDITIONAL_CLASSNAME_ANIMATE_IN);
-            }
 
             ComputedStyle cs = new ComputedStyle(getElement());
             String animationName = AnimationUtil.getAnimationName(cs);
@@ -588,21 +351,12 @@ public class Overlay extends PopupPanel implements CloseHandler<PopupPanel> {
                                     AnimationUtil.removeAnimationEndListener(
                                             getElement(), animateInListener);
                                     removeStyleDependentName(ADDITIONAL_CLASSNAME_ANIMATE_IN);
-                                    if (isShadowEnabled()) {
-                                        shadow.removeClassName(CLASSNAME_SHADOW
-                                                + "-"
-                                                + ADDITIONAL_CLASSNAME_ANIMATE_IN);
-                                    }
                                 }
                             }
                         });
                 return true;
             } else {
                 removeStyleDependentName(ADDITIONAL_CLASSNAME_ANIMATE_IN);
-                if (isShadowEnabled()) {
-                    shadow.removeClassName(CLASSNAME_SHADOW + "-"
-                            + ADDITIONAL_CLASSNAME_ANIMATE_IN);
-                }
                 return false;
             }
         }
@@ -611,19 +365,12 @@ public class Overlay extends PopupPanel implements CloseHandler<PopupPanel> {
     @Override
     protected void onDetach() {
         super.onDetach();
-
-        // Always ensure shadow is removed when the overlay is removed.
-        removeShadowIfPresent();
         removeShimElement();
     }
 
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
-        if (isShadowEnabled()) {
-            shadow.getStyle().setProperty("visibility",
-                    visible ? "visible" : "hidden");
-        }
         if (isShimElementEnabled()) {
             shimElement.getStyle().setProperty("visibility",
                     visible ? "visible" : "hidden");
@@ -643,25 +390,6 @@ public class Overlay extends PopupPanel implements CloseHandler<PopupPanel> {
     }
 
     /**
-     * Sets the shadow style for this overlay. Will override any previous style
-     * for the shadow. The default style name is defined by CLASSNAME_SHADOW.
-     * The given style will be prefixed with CLASSNAME_SHADOW.
-     * 
-     * @param style
-     *            The new style name for the shadow element. Will be prefixed by
-     *            CLASSNAME_SHADOW, e.g. style=='foobar' -> actual style
-     *            name=='v-shadow-foobar'.
-     * 
-     * @deprecated See main JavaDoc for Overlay
-     */
-    @Deprecated
-    protected void setShadowStyle(String style) {
-        if (isShadowEnabled()) {
-            shadow.setClassName(CLASSNAME_SHADOW + "-" + style);
-        }
-    }
-
-    /**
      * Extending classes should always call this method after they change the
      * size of overlay without using normal 'setWidth(String)' and
      * 'setHeight(String)' methods (if not calling super.setWidth/Height).
@@ -672,16 +400,8 @@ public class Overlay extends PopupPanel implements CloseHandler<PopupPanel> {
     }
 
     /**
-     * @deprecated Call {@link #positionOrSizeUpdated()} instead.
-     */
-    @Deprecated
-    protected void updateShadowSizeAndPosition() {
-        positionOrSizeUpdated();
-    }
-
-    /**
-     * Recalculates proper position and dimensions for the shadow and shim
-     * elements. Can be used to animate the related elements, using the
+     * Recalculates proper position and dimensions.
+     * Can be used to animate the related elements, using the
      * 'progress' parameter (used to animate the shadow in sync with GWT
      * PopupPanel's default animation 'PopupPanel.AnimationType.CENTER').
      * 
@@ -714,74 +434,11 @@ public class Overlay extends PopupPanel implements CloseHandler<PopupPanel> {
             getOffsetWidth();
         }
 
-        if (isShadowEnabled() || needsShimElement()) {
-
-            PositionAndSize positionAndSize = new PositionAndSize(
-                    getActualLeft(), getActualTop(), getOffsetWidth(),
-                    getOffsetHeight());
-
-            // Animate the size
-            positionAndSize.setAnimationFromCenterProgress(progress);
-
-            Element container = getElement().getParentElement();
-
-            if (isShadowEnabled()) {
-                updateShadowPosition(progress, zIndex, positionAndSize);
-                if (shadow.getParentElement() == null) {
-                    container.insertBefore(shadow, getElement());
-                    sinkShadowEvents();
-                }
-            }
-
-            if (needsShimElement()) {
-                updateShimPosition(positionAndSize);
-                if (shimElement.getParentElement() == null) {
-                    container.insertBefore(shimElement, getElement());
-                }
-            }
-        }
         // Fix for #14173
         // IE9 and IE10 have a bug, when resize an a element with box-shadow.
         // IE9 and IE10 need explicit update to remove extra box-shadows
         if (BrowserInfo.get().isIE9() || BrowserInfo.get().isIE10()) {
             WidgetUtil.forceIERedraw(getElement());
-        }
-    }
-
-    /**
-     * @deprecated See main JavaDoc for Overlay
-     */
-    @Deprecated
-    private void updateShadowPosition(final double progress, int zIndex,
-            PositionAndSize positionAndSize) {
-        // Opera needs some shaking to get parts of the shadow showing
-        // properly (ticket #2704)
-        if (BrowserInfo.get().isOpera()) {
-            // Clear the height of all middle elements
-            DOM.getChild(shadow, 3).getStyle().setProperty("height", "auto");
-            DOM.getChild(shadow, 4).getStyle().setProperty("height", "auto");
-            DOM.getChild(shadow, 5).getStyle().setProperty("height", "auto");
-        }
-
-        updatePositionAndSize(shadow, positionAndSize);
-        shadow.getStyle().setZIndex(zIndex);
-        shadow.getStyle().setProperty("display", progress < 0.9 ? "none" : "");
-
-        // Opera fix, part 2 (ticket #2704)
-        if (BrowserInfo.get().isOpera()) {
-            // We'll fix the height of all the middle elements
-            DOM.getChild(shadow, 3)
-                    .getStyle()
-                    .setPropertyPx("height",
-                            DOM.getChild(shadow, 3).getOffsetHeight());
-            DOM.getChild(shadow, 4)
-                    .getStyle()
-                    .setPropertyPx("height",
-                            DOM.getChild(shadow, 4).getOffsetHeight());
-            DOM.getChild(shadow, 5)
-                    .getStyle()
-                    .setPropertyPx("height",
-                            DOM.getChild(shadow, 5).getOffsetHeight());
         }
     }
 
@@ -817,69 +474,8 @@ public class Overlay extends PopupPanel implements CloseHandler<PopupPanel> {
     }
 
     @Override
-    public void onClose(CloseEvent<PopupPanel> event) {
-        removeShadowIfPresent();
-    }
-
-    @Override
     public void sinkEvents(int eventBitsToAdd) {
         super.sinkEvents(eventBitsToAdd);
-        // Also sink events on the shadow if present
-        sinkShadowEvents();
-    }
-
-    /**
-     * @deprecated See main JavaDoc for Overlay
-     */
-    @Deprecated
-    private void sinkShadowEvents() {
-        if (isSinkShadowEvents() && isShadowAttached()) {
-            // Sink the same events as the actual overlay has sunk
-            DOM.sinkEvents(shadow, DOM.getEventsSunk(getElement()));
-            // Send events to Overlay.onBrowserEvent
-            DOM.setEventListener(shadow, this);
-        }
-    }
-
-    /**
-     * @deprecated See main JavaDoc for Overlay
-     */
-    @Deprecated
-    private void unsinkShadowEvents() {
-        if (isShadowAttached()) {
-            DOM.setEventListener(shadow, null);
-            DOM.sinkEvents(shadow, 0);
-        }
-    }
-
-    /**
-     * Enables or disables sinking the events of the shadow to the same
-     * onBrowserEvent as events to the actual overlay goes.
-     * 
-     * Please note, that if you enable this, you can't assume that e.g.
-     * event.getEventTarget returns an element inside the DOM structure of the
-     * overlay
-     * 
-     * @param sinkShadowEvents
-     * 
-     * @deprecated See main JavaDoc for Overlay
-     */
-    @Deprecated
-    protected void setSinkShadowEvents(boolean sinkShadowEvents) {
-        this.sinkShadowEvents = sinkShadowEvents;
-        if (sinkShadowEvents) {
-            sinkShadowEvents();
-        } else {
-            unsinkShadowEvents();
-        }
-    }
-
-    /**
-     * @deprecated See main JavaDoc for Overlay
-     */
-    @Deprecated
-    protected boolean isSinkShadowEvents() {
-        return sinkShadowEvents;
     }
 
     /**
@@ -1017,7 +613,7 @@ public class Overlay extends PopupPanel implements CloseHandler<PopupPanel> {
     public void hide(final boolean autoClosed, final boolean animateIn,
             final boolean animateOut) {
         if (BrowserInfo.get().isIE8() || BrowserInfo.get().isIE9()) {
-            reallyHide(autoClosed);
+            super.hide(autoClosed);
         } else {
             if (animateIn
                     && getStyleName().contains(ADDITIONAL_CLASSNAME_ANIMATE_IN)) {
@@ -1029,17 +625,13 @@ public class Overlay extends PopupPanel implements CloseHandler<PopupPanel> {
                                         .getAnimationName(event)
                                         .contains(
                                                 ADDITIONAL_CLASSNAME_ANIMATE_IN)) {
-                                    reallyHide(autoClosed);
+                                    Overlay.this.hide(autoClosed);
                                 }
                             }
                         });
             } else {
                 // Check if animations are used
                 addStyleDependentName(ADDITIONAL_CLASSNAME_ANIMATE_OUT);
-                if (isShadowEnabled()) {
-                    shadow.addClassName(CLASSNAME_SHADOW + "-"
-                            + ADDITIONAL_CLASSNAME_ANIMATE_OUT);
-                }
                 ComputedStyle cs = new ComputedStyle(getElement());
                 String animationName = AnimationUtil.getAnimationName(cs);
                 if (animationName == null) {
@@ -1066,15 +658,7 @@ public class Overlay extends PopupPanel implements CloseHandler<PopupPanel> {
                                         // case
                                         removeStyleDependentName(ADDITIONAL_CLASSNAME_ANIMATE_IN);
                                         removeStyleDependentName(ADDITIONAL_CLASSNAME_ANIMATE_OUT);
-                                        if (isShadowEnabled()) {
-                                            shadow.removeClassName(CLASSNAME_SHADOW
-                                                    + "-"
-                                                    + ADDITIONAL_CLASSNAME_ANIMATE_IN);
-                                            shadow.removeClassName(CLASSNAME_SHADOW
-                                                    + "-"
-                                                    + ADDITIONAL_CLASSNAME_ANIMATE_OUT);
-                                        }
-                                        reallyHide(autoClosed);
+                                        Overlay.super.hide(autoClosed);
                                     }
                                 }
                             });
@@ -1083,59 +667,16 @@ public class Overlay extends PopupPanel implements CloseHandler<PopupPanel> {
                     Overlay.this.setPreviewingAllNativeEvents(false);
                 } else {
                     removeStyleDependentName(ADDITIONAL_CLASSNAME_ANIMATE_OUT);
-                    if (isShadowEnabled()) {
-                        shadow.removeClassName(CLASSNAME_SHADOW + "-"
-                                + ADDITIONAL_CLASSNAME_ANIMATE_OUT);
-                    }
-                    reallyHide(autoClosed);
+                    super.hide(autoClosed);
                 }
             }
         }
     }
 
-    private void reallyHide(boolean autoClosed) {
-        super.hide(autoClosed);
-        for (Command c : runOnClose) {
-            c.execute();
-        }
-        runOnClose.clear();
+    @Override
+    public void onClose(CloseEvent<PopupPanel> event) {
+        // TODO Auto-generated method stub
+        
     }
 
-    /**
-     * Sets whether the overlay should be moved or shrunk to fit inside the
-     * window.
-     * <p>
-     * When this is <code>false</code>, the default {@link PopupPanel} behavior
-     * is used, which tries to position the popup primarly below and to the
-     * right of a reference UIObject and, if there is not enough space, above or
-     * to the left.
-     * <p>
-     * When this is <code>true</code>, the popup will be moved up/left in case
-     * it does not fit on either side. If the popup is larger than the window,
-     * it will be shrunk to fit and assume that scrolling e.g. using
-     * <code>overflow:auto</code>, is taken care of by the overlay user.
-     * 
-     * @since
-     * @param fitInWindow
-     *            <code>true</code> to ensure that no part of the popup is
-     *            outside the visible view, <code>false</code> to use the
-     *            default {@link PopupPanel} behavior
-     */
-    public void setFitInWindow(boolean fitInWindow) {
-        this.fitInWindow = fitInWindow;
-    }
-
-    /**
-     * Checks whether the overlay should be moved or shrunk to fit inside the
-     * window.
-     * 
-     * @see #setFitInWindow(boolean)
-     * 
-     * @since
-     * @return <code>true</code> if the popup will be moved and/or shrunk to fit
-     *         inside the window, <code>false</code> otherwise
-     */
-    public boolean isFitInWindow() {
-        return fitInWindow;
-    }
 }

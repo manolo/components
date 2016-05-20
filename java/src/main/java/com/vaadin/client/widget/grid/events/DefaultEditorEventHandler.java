@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.vaadin.client.widget.grid;
+package com.vaadin.client.widget.grid.events;
 
 import com.google.gwt.core.client.Duration;
 import com.google.gwt.dom.client.BrowserEvents;
@@ -23,8 +23,8 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.WidgetUtil;
 import com.vaadin.client.ui.FocusUtil;
-import com.vaadin.client.widgets.Grid.Editor;
-import com.vaadin.client.widgets.Grid.EditorDomEvent;
+import com.vaadin.client.widget.grid.EventCellReference;
+import com.vaadin.client.widgets.grid.Editor;
 
 /**
  * The default handler for Grid editor events. Offers several overridable

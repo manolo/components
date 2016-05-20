@@ -15,7 +15,7 @@
  */
 package com.vaadin.client.widget.grid;
 
-import com.vaadin.client.widgets.Grid;
+import com.vaadin.client.widgets.grid.Grid;
 
 /**
  * Callback interface for generating custom style names for cells

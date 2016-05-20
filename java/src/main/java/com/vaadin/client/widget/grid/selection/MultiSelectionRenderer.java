@@ -39,11 +39,11 @@ import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.vaadin.client.WidgetUtil;
-import com.vaadin.client.renderers.ClickableRenderer;
 import com.vaadin.client.widget.grid.CellReference;
+import com.vaadin.client.widget.grid.ClickableRenderer;
 import com.vaadin.client.widget.grid.RendererCellReference;
 import com.vaadin.client.widget.grid.selection.SelectionModel.Multi.Batched;
-import com.vaadin.client.widgets.Grid;
+import com.vaadin.client.widgets.grid.Grid;
 
 /**
  * Renderer showing multi selection check boxes.

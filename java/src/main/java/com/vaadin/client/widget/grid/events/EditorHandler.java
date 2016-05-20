@@ -13,12 +13,14 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.vaadin.client.widget.grid;
+package com.vaadin.client.widget.grid.events;
 
 import java.util.Collection;
 
 import com.google.gwt.user.client.ui.Widget;
-import com.vaadin.client.widgets.Grid;
+
+import com.vaadin.client.widgets.grid.Column;
+import com.vaadin.client.widgets.grid.Grid;
 
 /**
  * An interface for binding widgets and data to the grid row editor. Used by the
@@ -82,7 +84,7 @@ public interface EditorHandler<T> {
          *            the column whose widget to get
          * @return the widget related to the column
          */
-        public Widget getWidget(Grid.Column<?, T> column);
+        public Widget getWidget(Column<?, T> column);
 
         /**
          * Informs Grid that the editor request was a success.
@@ -102,7 +104,7 @@ public interface EditorHandler<T> {
          *            be marked as erroneous.
          */
         public void failure(String errorMessage,
-                Collection<Grid.Column<?, T>> errorColumns);
+                Collection<Column<?, T>> errorColumns);
 
         /**
          * Checks whether the request is completed or not.
@@ -170,5 +172,5 @@ public interface EditorHandler<T> {
      * @return the editor widget for the column or null if the column is not
      *         editable
      */
-    public Widget getWidget(Grid.Column<?, T> column);
+    public Widget getWidget(Column<?, T> column);
 }

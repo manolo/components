@@ -17,7 +17,8 @@ package com.vaadin.client.widget.grid;
 
 import com.google.gwt.dom.client.TableCellElement;
 import com.vaadin.client.widget.escalator.FlyweightCell;
-import com.vaadin.client.widgets.Grid;
+import com.vaadin.client.widgets.grid.Column;
+import com.vaadin.client.widgets.grid.Grid;
 
 /**
  * A data class which contains information which identifies a cell being
@@ -55,10 +56,10 @@ public class RendererCellReference extends CellReference<Object> {
      *            the column to reference
      */
     public void set(FlyweightCell cell, int columnIndex,
-            Grid.Column<?, ?> column) {
+            Column<?, ?> column) {
         this.cell = cell;
         super.set(cell.getColumn(), columnIndex,
-                (Grid.Column<?, Object>) column);
+                (Column<?, Object>) column);
     }
 
     /**

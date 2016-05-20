@@ -2,8 +2,6 @@ package com.vaadin.elements.grid.table;
 
 import static com.google.gwt.query.client.GQuery.$;
 
-import java.util.List;
-
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
@@ -12,9 +10,10 @@ import com.google.gwt.query.client.plugins.observe.Observe;
 import com.google.gwt.query.client.plugins.observe.Observe.Changes.MutationRecord;
 import com.google.gwt.query.client.plugins.observe.Observe.MutationListener;
 import com.google.gwt.user.client.Timer;
-import com.vaadin.client.widgets.Grid;
-import com.vaadin.client.widgets.Grid.StaticSection.StaticCell;
-import com.vaadin.client.widgets.Grid.StaticSection.StaticRow;
+
+import com.vaadin.client.widgets.grid.Grid;
+import com.vaadin.client.widgets.grid.StaticCell;
+import com.vaadin.client.widgets.grid.StaticSection.StaticRow;
 import com.vaadin.elements.common.js.JS;
 import com.vaadin.elements.common.js.JSArray;
 import com.vaadin.elements.common.js.JSValidate;
@@ -22,6 +21,8 @@ import com.vaadin.elements.grid.GridElement;
 import com.vaadin.elements.grid.config.JSColumn;
 import com.vaadin.elements.grid.config.JSSortOrder;
 import com.vaadin.elements.grid.config.JSStaticCell;
+
+import java.util.List;
 
 /**
  * This class represents a grid header configuration based on a DOM structure.

@@ -18,7 +18,8 @@ package com.vaadin.client.widget.grid.sort;
 import java.util.List;
 
 import com.google.gwt.event.shared.GwtEvent;
-import com.vaadin.client.widgets.Grid;
+
+import com.vaadin.client.widgets.grid.Grid;
 
 /**
  * A sort event, fired by the Grid when it needs its data source to provide data

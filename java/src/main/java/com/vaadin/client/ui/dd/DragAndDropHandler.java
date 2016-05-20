@@ -24,7 +24,7 @@ import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.vaadin.client.WidgetUtil;
-import com.vaadin.client.widgets.Grid;
+import com.vaadin.client.widgets.grid.Grid;
 
 /**
  * A simple event handler for elements that can be drag and dropped. Properly

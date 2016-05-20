@@ -16,7 +16,8 @@
 package com.vaadin.client.widget.grid.events;
 
 import com.google.gwt.event.shared.GwtEvent;
-import com.vaadin.client.widgets.Grid.Column;
+
+import com.vaadin.client.widgets.grid.Column;
 
 /**
  * An event for notifying that the columns in the Grid's have changed

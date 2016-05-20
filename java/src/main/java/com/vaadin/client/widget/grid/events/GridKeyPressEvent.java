@@ -18,8 +18,7 @@ package com.vaadin.client.widget.grid.events;
 import com.google.gwt.dom.client.BrowserEvents;
 import com.vaadin.client.widget.grid.CellReference;
 import com.vaadin.client.widget.grid.events.AbstractGridKeyEventHandler.GridKeyPressHandler;
-import com.vaadin.client.widgets.Grid;
-import com.vaadin.client.widgets.Grid.AbstractGridKeyEvent;
+import com.vaadin.client.widgets.grid.Grid;
 import com.vaadin.shared.ui.grid.GridConstants.Section;
 
 /**

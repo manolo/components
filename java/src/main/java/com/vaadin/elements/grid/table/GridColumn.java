@@ -1,8 +1,5 @@
 package com.vaadin.elements.grid.table;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Element;
@@ -11,7 +8,8 @@ import com.google.gwt.dom.client.Style.TextOverflow;
 import com.google.gwt.query.client.js.JsUtils;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.HTML;
-import com.vaadin.client.widgets.Grid.Column;
+
+import com.vaadin.client.widgets.grid.Column;
 import com.vaadin.elements.common.js.JS;
 import com.vaadin.elements.common.js.JSArray;
 import com.vaadin.elements.grid.GridElement;
@@ -19,6 +17,9 @@ import com.vaadin.elements.grid.config.JSColumn;
 import com.vaadin.elements.grid.config.JSStaticCell;
 import com.vaadin.elements.grid.data.GridDataSource;
 import com.vaadin.elements.grid.data.GridDomTableDataSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 public final class GridColumn extends Column<Object, Object> {
 
