@@ -3,15 +3,15 @@
   <modelVersion>4.0.0</modelVersion>
   <name>Vaadin Components Gwt Exported: The Grid</name>
   <groupId>com.vaadin.elements</groupId>
-  <artifactId>vaadin-grid</artifactId>
+  <artifactId>vaadin-grid-new</artifactId>
   <packaging>war</packaging>
-  <version>0.3.0</version>
+  <version>1.2.0</version>
   <properties>
     <module.name>com.vaadin.elements.grid.VaadinGrid</module.name>
     <modulePathPrefix></modulePathPrefix>
     <gwt.loglevel>WARN</gwt.loglevel>
-    <gwtversion>2.8.0.VCM-SNAPSHOT</gwtversion>
-    <gwtmaven>2.8.0.VC-SNAPSHOT</gwtmaven>
+    <gwtversion>2.8.0-SNAPSHOT</gwtversion>
+    <gwtmaven>2.8.0-SNAPSHOT</gwtmaven>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
