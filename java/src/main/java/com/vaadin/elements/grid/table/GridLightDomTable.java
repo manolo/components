@@ -18,7 +18,6 @@ import com.vaadin.elements.common.js.JS;
 import com.vaadin.elements.common.js.JSArray;
 import com.vaadin.elements.common.js.JSValidate;
 import com.vaadin.elements.grid.GridElement;
-import com.vaadin.elements.grid.config.JSColumn;
 import com.vaadin.elements.grid.config.JSSortOrder;
 import com.vaadin.elements.grid.config.JSStaticCell;
 
@@ -117,20 +116,20 @@ public class GridLightDomTable implements MutationListener {
     }
 
     private void configureColumnsFromDom(GQuery columns) {
-        JSArray<JSColumn> jsColumns = gridElement.getColumns();
+        JSArray<GridColumn> jsColumns = gridElement.getColumns();
         jsColumns.setLength(0);
         numberColumns = columns.size();
 
         JSArray<JSSortOrder> sortOrders = JS.createArray();
 
         for (int i = 0; i < numberColumns; i++) {
-            jsColumns.add(new JSColumn());
+            jsColumns.add(new GridColumn(gridElement));
         }
         gridElement.setColumns(jsColumns);
 
         for (int i = 0; i < numberColumns; i++) {
             GQuery $th = columns.eq(i);
-            JSColumn column = jsColumns.get(i);
+            GridColumn column = jsColumns.get(i);
             column.setSortable(JSValidate.Boolean.attr($th, "sortable"));
             Scheduler.get().scheduleDeferred(
                     () -> column.setHidable(JSValidate.Boolean.attr($th,

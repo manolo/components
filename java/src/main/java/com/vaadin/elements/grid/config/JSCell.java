@@ -39,7 +39,7 @@ public class JSCell {
 
     @JsProperty
     String getColumnName() {
-        return ((GridColumn) cell.getColumn()).getJsColumn().getName();
+        return ((GridColumn) cell.getColumn()).getName();
     }
 
     @JsProperty

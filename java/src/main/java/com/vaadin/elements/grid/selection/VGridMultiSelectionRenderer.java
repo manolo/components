@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.vaadin.client.widget.grid.selection;
+package com.vaadin.elements.grid.selection;
 
 import com.google.gwt.animation.client.AnimationScheduler;
 import com.google.gwt.animation.client.AnimationScheduler.AnimationCallback;
@@ -39,6 +39,7 @@ import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.query.client.GQuery;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
@@ -55,12 +56,12 @@ import com.vaadin.client.widget.grid.CellReference;
 import com.vaadin.client.widget.grid.ClickableRenderer.RendererClickHandler;
 import com.vaadin.client.widget.grid.EventCellReference;
 import com.vaadin.client.widget.grid.RendererCellReference;
+import com.vaadin.client.widget.grid.selection.SelectionModel;
 import com.vaadin.client.widget.grid.selection.SelectionModel.Multi.Batched;
 import com.vaadin.client.widgets.grid.Grid;
 import com.vaadin.shared.ui.grid.GridConstants.Section;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 
 /**
@@ -71,7 +72,7 @@ import java.util.HashSet;
  *            the type of the associated grid
  * @since 7.4
  */
-public class MultiSelectionRenderer<T> implements Renderer<T>{
+public class VGridMultiSelectionRenderer<T> implements Renderer<T>{
 
     private static final String SELECTION_CHECKBOX_CLASSNAME = "-selection-checkbox";
 
@@ -596,7 +597,7 @@ public class MultiSelectionRenderer<T> implements Renderer<T>{
 
     private final AutoScrollHandler autoScrollHandler = new AutoScrollHandler();
 
-    public MultiSelectionRenderer(final Grid<T> grid) {
+    public VGridMultiSelectionRenderer(final Grid grid) {
         this.grid = grid;
     }
 
@@ -621,6 +622,11 @@ public class MultiSelectionRenderer<T> implements Renderer<T>{
         checkBox.addMouseDownHandler(handler);
         checkBox.addTouchStartHandler(handler);
         checkBox.addClickHandler(handler);
+        
+        checkBox.setTabIndex(-1);
+        checkBox.addStyleName("vaadin-grid style-scope");
+        GQuery.$(checkBox).children()
+                .addClass("vaadin-grid", "style-scope");
 
         return checkBox;
     }

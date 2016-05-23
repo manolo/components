@@ -62,8 +62,7 @@ public class CellReference<T> {
      * @param column
      *            the column object
      */
-    public void set(int columnIndexDOM, int columnIndex,
-            Column<?, T> column) {
+    public void set(int columnIndexDOM, int columnIndex, Column<?, T> column) {
         this.columnIndexDOM = columnIndexDOM;
         this.columnIndex = columnIndex;
         this.column = column;
@@ -128,7 +127,7 @@ public class CellReference<T> {
     public Column<?, T> getColumn() {
         return column;
     }
-    
+
     /**
      * Gets the value of the cell.
      * 
@@ -143,7 +142,7 @@ public class CellReference<T> {
      * 
      * @return the element of the cell
      */
-    @JsProperty(name = "index")
+    @JsProperty(name = "element")
     public TableCellElement getElement() {
         return rowReference.getElement().getCells().getItem(columnIndexDOM);
     }
@@ -156,16 +155,15 @@ public class CellReference<T> {
     protected RowReference<T> getRowReference() {
         return rowReference;
     }
-    
+
     @JsProperty
     String getColumnName() {
-        return getColumn().name;
+        return getColumn().getName();
     }
-    
+
     @JsProperty
     Object getData() {
         return getColumn().getValue(getRow());
     }
-
 
 }

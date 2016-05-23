@@ -93,7 +93,7 @@ public class JSStaticCell {
         if (column != null) {
             // Default header cell content is empty, use
             // column name as the header caption and cell html instead
-            String name = column.getJsColumn().getName();
+            String name = column.getName();
             name = name != null ? name : "";
             // Remove until last dot
             name = name.replaceFirst(".*\\.", "");
@@ -119,7 +119,7 @@ public class JSStaticCell {
 
     private void applyElementContent(Element content, GridColumn column) {
         if (column != null) {
-            String name = column.getJsColumn().getName();
+            String name = column.getName();
             if (name != null) {
                 column.setHeaderCaption(name);
             } else {

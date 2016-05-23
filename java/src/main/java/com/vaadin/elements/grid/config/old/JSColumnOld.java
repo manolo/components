@@ -1,23 +1,24 @@
-package com.vaadin.elements.grid.config;
-
-import jsinterop.annotations.JsProperty;
-import jsinterop.annotations.JsType;
+package com.vaadin.elements.grid.config.old;
 
 import com.vaadin.elements.common.js.JS;
 import com.vaadin.elements.common.js.JSFunction;
 import com.vaadin.elements.grid.GridElement;
+import com.vaadin.elements.grid.config.JSCell;
 import com.vaadin.elements.grid.table.GridColumn;
 import com.vaadin.shared.ui.grid.GridConstants;
+
+import jsinterop.annotations.JsProperty;
+import jsinterop.annotations.JsType;
 
 /**
  * This class is a JsInterop object for the JS object representing a grid column
  * configuration.
  */
 @JsType(namespace = JS.NAMESPACE_API)
-public class JSColumn {
+public class JSColumnOld {
 
-    public static JSColumn promote(Object o) {
-        return JS.promoteTo(o, JSColumn.class);
+    public static JSColumnOld promote(Object o) {
+        return JS.promoteTo(o, JSColumnOld.class);
     }
 
     private GridColumn col;

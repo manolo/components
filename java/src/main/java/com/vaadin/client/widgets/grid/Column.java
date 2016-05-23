@@ -791,8 +791,17 @@ public abstract class Column<C, T> {
         cell.setText(headerCaption);
     }
     
-    @JsProperty
-    public String name;
     
+    protected String cname;
+    
+    @JsProperty
+    public String getName() {
+        return cname;
+    }
+
+    @JsProperty
+    public void setName(String s) {
+        cname = s;
+    }
 
 }

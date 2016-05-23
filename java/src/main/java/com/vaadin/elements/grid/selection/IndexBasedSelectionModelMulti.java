@@ -32,27 +32,7 @@ public class IndexBasedSelectionModelMulti extends SelectionModelMulti<Object>
     public void setGrid(Grid<Object> grid) {
         super.setGrid(grid);
         this.grid = grid;
-        renderer = new MultiSelectionRenderer<Object>(grid) {
-            @Override
-            public CheckBox createWidget() {
-                CheckBox checkBox = super.createWidget();
-                checkBox.setTabIndex(-1);
-                checkBox.addStyleName("vaadin-grid style-scope");
-                GQuery.$(checkBox).children()
-                        .addClass("vaadin-grid", "style-scope");
-                return checkBox;
-            }
-
-            @Override
-            protected void setSelected(int logicalRow, boolean select) {
-                // FIXME: Uncomment to enable drag-select
-                // if (lastSelected != logicalRow) {
-                if (lastSelected == -1) {
-                    super.setSelected(logicalRow, select);
-                    lastSelected = logicalRow;
-                }
-            }
-        };
+        renderer = new VGridMultiSelectionRenderer<Boolean>(grid);
     }
 
     @Override

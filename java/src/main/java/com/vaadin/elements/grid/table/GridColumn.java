@@ -15,7 +15,6 @@ import com.vaadin.elements.common.js.JSArray;
 import com.vaadin.elements.common.js.JSFunction;
 import com.vaadin.elements.grid.GridElement;
 import com.vaadin.elements.grid.config.JSCell;
-import com.vaadin.elements.grid.config.JSColumn;
 import com.vaadin.elements.grid.config.JSStaticCell;
 import com.vaadin.elements.grid.data.GridDataSource;
 import com.vaadin.elements.grid.data.GridDomTableDataSource;
@@ -28,7 +27,6 @@ import jsinterop.annotations.JsProperty;
 
 public final class GridColumn extends Column<Object, Object> {
 
-    private final JSColumn jsColumn;
     private  GridElement gridElement;
 
     /**
@@ -38,16 +36,15 @@ public final class GridColumn extends Column<Object, Object> {
      *   promoted to a JSColumn to add customised setters/getters.
      */
     public static GridColumn createColumn(Object cfg, GridElement gridElement) {
-        JSColumn jsColumn = JSColumn.promote(cfg);
-        GridColumn column = new GridColumn(jsColumn, gridElement);
+        GridColumn column = promote(cfg);
+        column.gridElement = gridElement;
         gridElement.getGrid().addColumn(column,
                 gridElement.getGrid().getVisibleColumns().size());
-        jsColumn.configure(gridElement, column);
+        column.configure();
         return column;
     }
 
-    private GridColumn(JSColumn jsColumn, GridElement gridElement) {
-        this.jsColumn = jsColumn;
+    public GridColumn(GridElement gridElement) {
         this.gridElement = gridElement;
 
         // Default renderer
@@ -91,10 +88,6 @@ public final class GridColumn extends Column<Object, Object> {
 
     }
 
-    public JSColumn getJsColumn() {
-        return jsColumn;
-    }
-
     @Override
     public Object getValue(Object dataItem) {
         dataItem = GridDataSource.extractDataItem(dataItem);
@@ -109,7 +102,7 @@ public final class GridColumn extends Column<Object, Object> {
                 result = ((JSArray<Object>) dataItem).get(getColumnIndex());
             } else {
                 result = getNestedProperty(dataItem,
-                        Arrays.asList(jsColumn.getName().split("\\.")));
+                        Arrays.asList(getName().split("\\.")));
             }
         }
         return result;
@@ -128,29 +121,23 @@ public final class GridColumn extends Column<Object, Object> {
     }
 
     private int getColumnIndex() {
-        return gridElement.getColumns().indexOf(jsColumn);
+        return gridElement.getColumns().indexOf(this);
     }
     
     public static GridColumn promote(Object o) {
         return JS.promoteTo(o, GridColumn.class);
     }
 
-    private String name;
     private JSFunction<?, JSCell> renderer;
 
-    public void configure(GridElement gridElement, GridColumn column) {
-        this.gridElement = gridElement;
+    public void configure() {
         JS.reassignProperties(this);
     }
 
-    @JsProperty
-    public String getName() {
-        return name;
-    }
 
     @JsProperty
     public void setName(String s) {
-        name = s;
+        cname = s;
         nameChanged(s);
     }
 

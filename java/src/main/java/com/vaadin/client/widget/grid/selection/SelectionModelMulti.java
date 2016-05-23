@@ -75,7 +75,7 @@ public class SelectionModelMulti<T> extends AbstractRowHandleSelectionModel<T>
         this.grid = grid;
         if (this.grid != null) {
             spaceSelectHandler = new SpaceSelectHandler<T>(grid);
-            this.renderer = new MultiSelectionRenderer<T>(grid);
+            this.renderer = new MultiSelectionRenderer(grid);
         } else {
             spaceSelectHandler.removeHandler();
             spaceSelectHandler = null;

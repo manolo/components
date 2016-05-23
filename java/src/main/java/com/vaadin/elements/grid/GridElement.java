@@ -2,6 +2,7 @@ package com.vaadin.elements.grid;
 
 import static com.google.gwt.query.client.GQuery.$;
 import static com.google.gwt.query.client.GQuery.browser;
+import static com.google.gwt.query.client.GQuery.console;
 
 import com.google.gwt.core.client.JavaScriptException;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -38,7 +39,6 @@ import com.vaadin.elements.common.js.JSFunction2;
 import com.vaadin.elements.common.js.JSPromise;
 import com.vaadin.elements.common.js.JSValidate;
 import com.vaadin.elements.grid.config.JSCell;
-import com.vaadin.elements.grid.config.JSColumn;
 import com.vaadin.elements.grid.config.JSDataRequest;
 import com.vaadin.elements.grid.config.JSRow;
 import com.vaadin.elements.grid.config.JSSortOrder;
@@ -82,7 +82,7 @@ public class GridElement implements SelectionHandler<Object>,
 
     private Element container;
     private Element measureObject;
-    private JSArray<JSColumn> cols;
+    private JSArray<GridColumn> cols;
 
     private JSFunction<String, JSRow> rowClassGenerator;
     private JSFunction<String, JSCell> cellClassGenerator;
@@ -186,7 +186,7 @@ public class GridElement implements SelectionHandler<Object>,
         grid.getEscalator().getBody().setDefaultRowHeight(d);
     }
 
-    public JSColumn addColumn(JSColumn jsColumn, Object beforeColumnId) {
+    public GridColumn addColumn(GridColumn jsColumn, Object beforeColumnId) {
         int index = cols.length();
         if (beforeColumnId != null) {
             index = getColumnIndexByIndexOrName(beforeColumnId);
@@ -257,7 +257,7 @@ public class GridElement implements SelectionHandler<Object>,
         return grid.getScrollTop();
     }
 
-    public JSArray<JSColumn> getColumns() {
+    public JSArray<GridColumn> getColumns() {
         return cols;
     }
 
@@ -304,13 +304,18 @@ public class GridElement implements SelectionHandler<Object>,
         return (IndexBasedSelectionModel) grid.getSelectionModel();
     }
 
-    public void setColumns(JSArray<JSColumn> columns) {
+    int count = 0;
+    public void setColumns(JSArray<GridColumn> columns) {
+//        if (count ++ == 1) throw new RuntimeException();
+        
+        console.log("SET", columns);
+        
         this.cols = columns;
 
         // Add all missing columns to grid
-        Collection<JSColumn> currentColumns = new ArrayList<JSColumn>();
+        Collection<GridColumn> currentColumns = new ArrayList<GridColumn>();
         for (GridColumn c : getDataColumns()) {
-            currentColumns.add(c.getJsColumn());
+            currentColumns.add(c);
         }
 
         for (Object object : columns.asList()) {
@@ -325,7 +330,7 @@ public class GridElement implements SelectionHandler<Object>,
 
         // Remove all non-included columns from grid
         for (GridColumn column : getDataColumns()) {
-            if (columns.indexOf(column.getJsColumn()) == -1) {
+            if (columns.indexOf(column) == -1) {
                 grid.removeColumn(column);
             }
         }
@@ -333,8 +338,8 @@ public class GridElement implements SelectionHandler<Object>,
         // Fix column order
         GridColumn[] array = getDataColumns().toArray(new GridColumn[0]);
         Arrays.sort(array,
-                (o1, o2) -> columns.indexOf(o1.getJsColumn()) > columns
-                        .indexOf(o2.getJsColumn()) ? 1 : -1);
+                (o1, o2) -> columns.indexOf(o1) > columns
+                        .indexOf(o2) ? 1 : -1);
         if (array.length > 0) {
             grid.setColumnOrder(array);
         }
@@ -522,7 +527,7 @@ public class GridElement implements SelectionHandler<Object>,
         boolean result = getDataColumns().size() != cols.size();
         if (!result) {
             for (GridColumn col : getDataColumns()) {
-                if (cols.indexOf(col.getJsColumn()) == -1) {
+                if (cols.indexOf(col) == -1) {
                     result = true;
                 }
             }
