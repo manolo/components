@@ -19,6 +19,11 @@ import com.google.gwt.dom.client.TableCellElement;
 
 import com.vaadin.client.widgets.grid.Column;
 import com.vaadin.client.widgets.grid.Grid;
+import com.vaadin.elements.common.js.JS;
+import com.vaadin.elements.grid.table.GridColumn;
+
+import jsinterop.annotations.JsProperty;
+import jsinterop.annotations.JsType;
 
 /**
  * A data class which contains information which identifies a cell in a
@@ -78,6 +83,7 @@ public class CellReference<T> {
      * 
      * @return the index of the row
      */
+    @JsProperty(name = "index")
     public int getRowIndex() {
         return rowReference.getRowIndex();
     }
@@ -122,7 +128,7 @@ public class CellReference<T> {
     public Column<?, T> getColumn() {
         return column;
     }
-
+    
     /**
      * Gets the value of the cell.
      * 
@@ -137,6 +143,7 @@ public class CellReference<T> {
      * 
      * @return the element of the cell
      */
+    @JsProperty(name = "index")
     public TableCellElement getElement() {
         return rowReference.getElement().getCells().getItem(columnIndexDOM);
     }
@@ -149,5 +156,16 @@ public class CellReference<T> {
     protected RowReference<T> getRowReference() {
         return rowReference;
     }
+    
+    @JsProperty
+    String getColumnName() {
+        return getColumn().name;
+    }
+    
+    @JsProperty
+    Object getData() {
+        return getColumn().getValue(getRow());
+    }
+
 
 }

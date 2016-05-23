@@ -18,6 +18,9 @@ package com.vaadin.client.widget.grid;
 import com.google.gwt.dom.client.TableRowElement;
 
 import com.vaadin.client.widgets.grid.Grid;
+import com.vaadin.elements.grid.data.GridDataSource;
+
+import jsinterop.annotations.JsProperty;
 
 /**
  * A data class which contains information which identifies a row in a
@@ -80,6 +83,7 @@ public class RowReference<T> {
      * 
      * @return the index of the row
      */
+    @JsProperty(name = "index")
     public int getRowIndex() {
         return rowIndex;
     }
@@ -98,8 +102,15 @@ public class RowReference<T> {
      * 
      * @return the element of the row
      */
+    @JsProperty
     public TableRowElement getElement() {
         return element;
     }
+    
+    @JsProperty
+    Object getData() {
+        return GridDataSource.extractDataItem(getRow());
+    }
+
 
 }

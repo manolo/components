@@ -19,6 +19,8 @@ import com.vaadin.client.widget.escalator.Cell;
 import com.vaadin.client.widget.grid.RendererCellReference;
 import com.vaadin.client.widgets.grid.Grid;
 
+import jsinterop.annotations.JsFunction;
+
 /**
  * Renderer for rending a value &lt;T&gt; into cell.
  * <p>
@@ -32,6 +34,7 @@ import com.vaadin.client.widgets.grid.Grid;
  * @since 7.4
  * @author Vaadin Ltd
  */
+@JsFunction
 public interface Renderer<T> {
 
     /**

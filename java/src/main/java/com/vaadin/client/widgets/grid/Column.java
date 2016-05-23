@@ -9,6 +9,8 @@ import com.vaadin.client.widget.grid.RendererCellReference;
 import com.vaadin.client.widget.grid.events.ColumnVisibilityChangeEvent;
 import com.vaadin.shared.ui.grid.GridConstants;
 
+import jsinterop.annotations.JsProperty;
+
 /**
  * Base class for grid columns internally used by the Grid. The user should
  * use {@link Column} when creating new columns.
@@ -329,6 +331,7 @@ public abstract class Column<C, T> {
      * @see #setWidth(double)
      * @see #getWidthActual()
      */
+    @JsProperty
     public double getWidth() {
         return widthUser;
     }
@@ -385,6 +388,7 @@ public abstract class Column<C, T> {
      * @return {@code true} if the column is sortable by the user,
      *         {@code false} otherwise
      */
+    @JsProperty
     public boolean isSortable() {
         return sortable;
     }
@@ -481,6 +485,7 @@ public abstract class Column<C, T> {
      * @return {@code true} if the column is currently hidden, {@code false}
      *         otherwise
      */
+    @JsProperty
     public boolean isHidden() {
         return hidden;
     }
@@ -516,6 +521,7 @@ public abstract class Column<C, T> {
      * @return <code>true</code> if the user can hide the column,
      *         <code>false</code> if not
      */
+    @JsProperty
     public boolean isHidable() {
         return hidable;
     }
@@ -695,6 +701,7 @@ public abstract class Column<C, T> {
      * @return the minimum width for this column
      * @see #setMinimumWidth(double)
      */
+    @JsProperty(name = "minWidth")
     public double getMinimumWidth() {
         return minimumWidthPx;
     }
@@ -705,6 +712,7 @@ public abstract class Column<C, T> {
      * @return the maximum width for this column
      * @see #setMaximumWidth(double)
      */
+    @JsProperty(name = "maxWidth")
     public double getMaximumWidth() {
         return maximumWidthPx;
     }
@@ -782,4 +790,9 @@ public abstract class Column<C, T> {
     protected void setDefaultHeaderContent(Header.HeaderCell cell) {
         cell.setText(headerCaption);
     }
+    
+    @JsProperty
+    public String name;
+    
+
 }

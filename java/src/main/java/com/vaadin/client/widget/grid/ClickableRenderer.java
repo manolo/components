@@ -27,11 +27,12 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
+
 import com.vaadin.client.WidgetUtil;
 import com.vaadin.client.renderers.WidgetRenderer;
 import com.vaadin.client.widget.escalator.Cell;
 import com.vaadin.client.widget.escalator.RowContainer;
-import com.vaadin.client.widgets.escalator.Escalator;
+import com.vaadin.client.widget.grid.ClickableRenderer.RendererClickHandler;
 import com.vaadin.client.widgets.grid.Grid;
 import com.vaadin.shared.ui.grid.GridConstants.Section;
 
@@ -146,7 +147,7 @@ public abstract class ClickableRenderer<T, W extends Widget> extends
          *         descendant of one
          */
         private static <T> CellReference<T> findCell(Grid<T> grid, Element e) {
-            RowContainer container = getEscalator(grid).findRowContainer(e);
+            RowContainer container = grid.getEscalator().findRowContainer(e);
             if (container == null) {
                 return null;
             }
@@ -158,11 +159,6 @@ public abstract class ClickableRenderer<T, W extends Widget> extends
             cellReference.set(cell, Section.BODY);
             return cellReference;
         }
-
-        private native static Escalator getEscalator(Grid<?> grid)
-        /*-{    
-          return grid.@com.vaadin.client.widgets.grid.Grid::escalator;
-        }-*/;
 
         /**
          * Returns the Grid instance containing the given element, if any.
