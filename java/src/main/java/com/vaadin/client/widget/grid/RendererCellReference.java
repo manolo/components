@@ -16,6 +16,7 @@
 package com.vaadin.client.widget.grid;
 
 import com.google.gwt.dom.client.TableCellElement;
+
 import com.vaadin.client.widget.escalator.FlyweightCell;
 import com.vaadin.client.widgets.grid.Column;
 import com.vaadin.client.widgets.grid.Grid;

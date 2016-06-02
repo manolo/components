@@ -158,7 +158,7 @@ public class CellReference<T> {
 
     @JsProperty
     String getColumnName() {
-        return getColumn().getName();
+        return ((GridColumn)getColumn()).getName();
     }
 
     @JsProperty

@@ -1,5 +1,7 @@
 package com.vaadin.client.widgets.grid;
 
+import static com.google.gwt.query.client.GQuery.console;
+
 import com.google.gwt.dom.client.TableRowElement;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -7,6 +9,7 @@ import com.vaadin.client.WidgetUtil;
 import com.vaadin.client.renderers.ComplexRenderer;
 import com.vaadin.client.renderers.Renderer;
 import com.vaadin.client.renderers.WidgetRenderer;
+import com.vaadin.client.renderers.ComplexRenderer.ComplexRendererInternal;
 import com.vaadin.client.widget.escalator.EscalatorUpdater;
 import com.vaadin.client.widget.escalator.FlyweightCell;
 import com.vaadin.client.widget.escalator.Row;
@@ -28,11 +31,13 @@ class BodyUpdater<T> implements EscalatorUpdater {
                 row.getElement());
         for (FlyweightCell cell : cellsToAttach) {
             Renderer<?> renderer = grid.findRenderer(cell);
-            if (renderer instanceof ComplexRenderer) {
+            console.log("AAA", renderer.getClass().getName());
+            if (renderer instanceof ComplexRenderer.ComplexRendererInternal) {
                 try {
                     Column<?, T> column = grid.getVisibleColumn(cell.getColumn());
                     grid.rendererCellReference.set(cell,
                             grid.getColumns().indexOf(column), column);
+                    console.log("init");
                     ((ComplexRenderer<?>) renderer)
                             .init(grid.rendererCellReference);
                 } catch (RuntimeException e) {
@@ -168,9 +173,11 @@ class BodyUpdater<T> implements EscalatorUpdater {
 
             try {
                 grid.rendererCellReference.set(cell, columnIndex, column);
-                if (renderer instanceof ComplexRenderer) {
+                if (renderer instanceof ComplexRendererInternal) {
                     // Hide cell content if needed
-                    ComplexRenderer clxRenderer = (ComplexRenderer) renderer;
+                    ComplexRenderer clxRenderer = ((ComplexRendererInternal) renderer).complexRenderer;
+                    
+                    console.log("update", clxRenderer.getClass().getName());
                     if (hasData) {
                         if (!usedToHaveData) {
                             // Prepare cell for rendering
@@ -179,7 +186,7 @@ class BodyUpdater<T> implements EscalatorUpdater {
                         }
 
                         Object value = column.getValue(rowData);
-                        clxRenderer.render(grid.rendererCellReference, value);
+                        clxRenderer.renderer.render(grid.rendererCellReference, value);
 
                     } else {
                         // Prepare cell for no data

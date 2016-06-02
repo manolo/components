@@ -1,5 +1,7 @@
 package com.vaadin.client.widgets.grid;
 
+import static com.google.gwt.query.client.GQuery.console;
+
 import com.vaadin.client.WidgetUtil;
 import com.vaadin.client.renderers.ComplexRenderer;
 import com.vaadin.client.renderers.Renderer;
@@ -789,19 +791,6 @@ public abstract class Column<C, T> {
      */
     protected void setDefaultHeaderContent(Header.HeaderCell cell) {
         cell.setText(headerCaption);
-    }
-    
-    
-    protected String cname;
-    
-    @JsProperty
-    public String getName() {
-        return cname;
-    }
-
-    @JsProperty
-    public void setName(String s) {
-        cname = s;
     }
 
 }

@@ -35,7 +35,7 @@ import jsinterop.annotations.JsFunction;
  * @author Vaadin Ltd
  */
 @JsFunction
-@FunctionalInterface
+//@FunctionalInterface
 public interface Renderer<T> {
 
     /**

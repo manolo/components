@@ -15,53 +15,35 @@
  */
 package com.vaadin.client.widget.grid.selection;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import com.google.gwt.animation.client.AnimationScheduler;
 import com.google.gwt.animation.client.AnimationScheduler.AnimationCallback;
 import com.google.gwt.animation.client.AnimationScheduler.AnimationHandle;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.BrowserEvents;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.dom.client.Node;
-import com.google.gwt.dom.client.Style.Visibility;
-import com.google.gwt.dom.client.TableCellElement;
 import com.google.gwt.dom.client.TableElement;
 import com.google.gwt.dom.client.TableSectionElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.event.dom.client.TouchStartEvent;
 import com.google.gwt.event.dom.client.TouchStartHandler;
-import com.google.gwt.event.shared.EventHandler;
-import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Widget;
-
 import com.vaadin.client.WidgetUtil;
-import com.vaadin.client.renderers.Renderer;
-import com.vaadin.client.widget.escalator.Cell;
-import com.vaadin.client.widget.escalator.FlyweightCell;
-import com.vaadin.client.widget.escalator.RowContainer;
 import com.vaadin.client.widget.grid.CellReference;
-import com.vaadin.client.widget.grid.ClickableRenderer.RendererClickHandler;
-import com.vaadin.client.widget.grid.EventCellReference;
+import com.vaadin.client.widget.grid.ClickableRenderer;
 import com.vaadin.client.widget.grid.RendererCellReference;
 import com.vaadin.client.widget.grid.selection.SelectionModel.Multi.Batched;
 import com.vaadin.client.widgets.grid.Grid;
-import com.vaadin.shared.ui.grid.GridConstants.Section;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 
 /**
  * Renderer showing multi selection check boxes.
@@ -71,7 +53,8 @@ import java.util.HashSet;
  *            the type of the associated grid
  * @since 7.4
  */
-public class MultiSelectionRenderer<T> implements Renderer<T>{
+public class MultiSelectionRenderer<T> extends
+        ClickableRenderer<Boolean, CheckBox> {
 
     private static final String SELECTION_CHECKBOX_CLASSNAME = "-selection-checkbox";
 
@@ -600,12 +583,14 @@ public class MultiSelectionRenderer<T> implements Renderer<T>{
         this.grid = grid;
     }
 
+    @Override
     public void destroy() {
         if (nativePreviewHandlerRegistration != null) {
             removeNativeHandler();
         }
     }
 
+    @Override
     public CheckBox createWidget() {
         final CheckBox checkBox = GWT.create(CheckBox.class);
         checkBox.setStylePrimaryName(grid.getStylePrimaryName()
@@ -625,6 +610,7 @@ public class MultiSelectionRenderer<T> implements Renderer<T>{
         return checkBox;
     }
 
+    @Override
     public void render(final RendererCellReference cell, final Boolean data,
             CheckBox checkBox) {
         checkBox.setValue(data, false);
@@ -633,6 +619,7 @@ public class MultiSelectionRenderer<T> implements Renderer<T>{
                 cell.getRowIndex());
     }
 
+    @Override
     public Collection<String> getConsumedEvents() {
         final HashSet<String> events = new HashSet<String>();
 
@@ -647,6 +634,7 @@ public class MultiSelectionRenderer<T> implements Renderer<T>{
         return events;
     }
 
+    @Override
     public boolean onBrowserEvent(final CellReference<?> cell,
             final NativeEvent event) {
         if (BrowserEvents.TOUCHSTART.equals(event.getType())
@@ -771,252 +759,5 @@ public class MultiSelectionRenderer<T> implements Renderer<T>{
         } else {
             grid.deselect(row);
         }
-    }
-    
-
-    /**
-     * A handler for {@link RendererClickEvent renderer click events}.
-     * 
-     * @param <R>
-     *            the row type of the containing Grid
-     * 
-     * @see {@link ButtonRenderer#addClickHandler(RendererClickHandler)}
-     */
-    public interface RendererClickHandler<R> extends EventHandler {
-
-        /**
-         * Called when a rendered button is clicked.
-         * 
-         * @param event
-         *            the event representing the click
-         */
-        void onClick(RendererClickEvent<R> event);
-    }
-
-    /**
-     * An event fired when a widget rendered by a ClickableWidgetRenderer
-     * subclass is clicked.
-     * 
-     * @param <R>
-     *            the row type of the containing Grid
-     */
-    @SuppressWarnings("rawtypes")
-    public static class RendererClickEvent<R> extends
-            MouseEvent<RendererClickHandler> {
-
-        @SuppressWarnings("unchecked")
-        static final Type<RendererClickHandler> TYPE = new Type<RendererClickHandler>(
-                BrowserEvents.CLICK, new RendererClickEvent());
-
-        private CellReference<R> cell;
-
-        private R row;
-
-        private RendererClickEvent() {
-        }
-
-        /**
-         * Returns the cell of the clicked button.
-         * 
-         * @return the cell
-         */
-        public CellReference<R> getCell() {
-            return cell;
-        }
-
-        /**
-         * Returns the data object corresponding to the row of the clicked
-         * button.
-         * 
-         * @return the row data object
-         */
-        public R getRow() {
-            return row;
-        }
-
-        @Override
-        public Type<RendererClickHandler> getAssociatedType() {
-            return TYPE;
-        }
-
-        @Override
-        @SuppressWarnings("unchecked")
-        protected void dispatch(RendererClickHandler handler) {
-
-            EventTarget target = getNativeEvent().getEventTarget();
-
-            if (!Element.is(target)) {
-                return;
-            }
-
-            Element e = Element.as(target);
-            Grid<R> grid = (Grid<R>) findClosestParentGrid(e);
-
-            cell = findCell(grid, e);
-            row = cell.getRow();
-
-            handler.onClick(this);
-        }
-
-        /**
-         * Returns the cell the given element belongs to.
-         * 
-         * @param grid
-         *            the grid instance that is queried
-         * @param e
-         *            a cell element or the descendant of one
-         * @return the cell or null if the element is not a grid cell or a
-         *         descendant of one
-         */
-        private static <T> CellReference<T> findCell(Grid<T> grid, Element e) {
-            RowContainer container = grid.getEscalator().findRowContainer(e);
-            if (container == null) {
-                return null;
-            }
-            Cell cell = container.getCell(e);
-            EventCellReference<T> cellReference = new EventCellReference<T>(
-                    grid);
-            // FIXME: Section is currently always body. Might be useful for the
-            // future to have an actual check.
-            cellReference.set(cell, Section.BODY);
-            return cellReference;
-        }
-
-        /**
-         * Returns the Grid instance containing the given element, if any.
-         * <p>
-         * <strong>Note:</strong> This method may not work reliably if the grid
-         * in question is wrapped in a {@link Composite} <em>unless</em> the
-         * element is inside another widget that is a child of the wrapped grid;
-         * please refer to the note in
-         * {@link WidgetUtil#findWidget(Element, Class) Util.findWidget} for
-         * details.
-         * 
-         * @param e
-         *            the element whose parent grid to find
-         * @return the parent grid or null if none found.
-         */
-        private static Grid<?> findClosestParentGrid(Element e) {
-            Widget w = WidgetUtil.findWidget(e, null);
-
-            while (w != null && !(w instanceof Grid)) {
-                w = w.getParent();
-            }
-            return (Grid<?>) w;
-        }
-    }
-
-    private HandlerManager handlerManager;
-
-    /**
-     * Adds a click handler to this button renderer. The handler is invoked
-     * every time one of the widgets rendered by this renderer is clicked.
-     * <p>
-     * Note that the row type of the click handler must match the row type of
-     * the containing Grid.
-     * 
-     * @param handler
-     *            the click handler to be added
-     */
-    public HandlerRegistration addClickHandler(RendererClickHandler<?> handler) {
-        if (handlerManager == null) {
-            handlerManager = new HandlerManager(this);
-        }
-        return handlerManager.addHandler(RendererClickEvent.TYPE, handler);
-    }
-
-    public void onClick(ClickEvent event) {
-        /*
-         * The handler manager is lazily instantiated so it's null iff
-         * addClickHandler is never called.
-         */
-        if (handlerManager != null) {
-            DomEvent.fireNativeEvent(event.getNativeEvent(), handlerManager);
-        }
-    }
-    
-    
-
-    @Override
-    public void render(RendererCellReference cell, T data) {
-        render(cell, (Boolean)data, (CheckBox)getWidget(cell.getElement(), null));
-    }
-
-    /**
-     * Returns the widget contained inside the given cell element, or null if it
-     * is not an instance of the given class. Cannot be called for cells that do
-     * not contain a widget.
-     * 
-     * @param e
-     *            the element inside to find a widget
-     * @param klass
-     *            the type of the widget to find
-     * @return the widget inside the element, or null if its type does not match
-     */
-    protected static <W extends Widget> W getWidget(TableCellElement e,
-            Class<W> klass) {
-        W w = WidgetUtil.findWidget(e.getFirstChildElement(), klass);
-        assert w == null || w.getElement() == e.getFirstChildElement() : "Widget not found inside cell";
-        return w;
-    }
-    
-
-    /**
-     * Called after the cell is deemed to be destroyed and no longer used by the
-     * Grid. Called after the cell element is detached from the DOM.
-     * <p>
-     * The row object in the cell reference will be <code>null</code> since the
-     * row might no longer be present in the data source.
-     * 
-     * @param cell
-     *            The cell. Note that the cell is not to be stored outside of
-     *            the method as the cell instance will change. See
-     *            {@link FlyweightCell}
-     */
-    public void destroy(RendererCellReference cell) {
-        // Implement if needed
-    }
-
-    /**
-     * Used by Grid to toggle whether to show actual data or just an empty
-     * placeholder while data is loading. This method is invoked whenever a cell
-     * changes between data being available and data missing.
-     * <p>
-     * Default implementation hides content by setting visibility: hidden to all
-     * elements inside the cell. Text nodes are left as is - renderers that add
-     * such to the root element need to implement explicit support hiding them.
-     * 
-     * @param cell
-     *            The cell
-     * @param hasData
-     *            Has the cell content been loaded from the data source
-     * 
-     */
-    public void setContentVisible(RendererCellReference cell, boolean hasData) {
-        Element cellElement = cell.getElement();
-        for (int n = 0; n < cellElement.getChildCount(); n++) {
-            Node node = cellElement.getChild(n);
-            if (Element.is(node)) {
-                Element e = Element.as(node);
-                if (hasData) {
-                    e.getStyle().clearVisibility();
-                } else {
-                    e.getStyle().setVisibility(Visibility.HIDDEN);
-                }
-            }
-        }
-    }
-
-    /**
-     * Called when the cell is activated by pressing <code>enter</code>, double
-     * clicking or performing a double tap on the cell.
-     * 
-     * @param cell
-     *            the activated cell
-     * @return <code>true</code> if event was handled and should not be
-     *         interpreted as a generic gesture by Grid.
-     */
-    public boolean onActivate(CellReference<?> cell) {
-        return false;
     }
 }

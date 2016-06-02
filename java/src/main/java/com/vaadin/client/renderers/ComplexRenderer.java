@@ -18,6 +18,8 @@ package com.vaadin.client.renderers;
 import java.util.Collection;
 import java.util.Collections;
 
+import static com.google.gwt.query.client.GQuery.console;
+
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Node;
@@ -40,7 +42,31 @@ import com.vaadin.client.widget.grid.RendererCellReference;
  * @since 7.4.0
  * @author Vaadin Ltd
  */
-public abstract class ComplexRenderer<T> implements Renderer<T> {
+public abstract class ComplexRenderer<T> {
+    
+    public static class ComplexRendererInternal<T> implements Renderer<T> {
+        public final ComplexRenderer<T> complexRenderer;
+        public ComplexRendererInternal(ComplexRenderer<T> c) {
+            console.log("Created 2", c.hashCode());
+            complexRenderer = c;
+        }
+        public void render(RendererCellReference cell, T data) {
+            console.log("render...");
+            complexRenderer.render(cell, data);
+        }
+    }
+    
+    
+    public ComplexRenderer() {
+        console.log("Created", this.hashCode());
+    }
+    
+    public Renderer<T> renderer = new ComplexRendererInternal<T>(this);
+    
+    
+    abstract protected void render(RendererCellReference cell, T data);
+    
+    
 
     /**
      * Called at initialization stage. Perform any initialization here e.g.

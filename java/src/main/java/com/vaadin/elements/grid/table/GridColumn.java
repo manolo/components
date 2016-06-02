@@ -1,5 +1,7 @@
 package com.vaadin.elements.grid.table;
 
+import static com.google.gwt.query.client.GQuery.console;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Element;
@@ -36,6 +38,7 @@ public final class GridColumn extends Column<Object, Object> {
      *   promoted to a JSColumn to add customised setters/getters.
      */
     public static GridColumn createColumn(Object cfg, GridElement gridElement) {
+        console.log("create", cfg);
         GridColumn column = promote(cfg);
         column.gridElement = gridElement;
         gridElement.getGrid().addColumn(column,
@@ -46,6 +49,7 @@ public final class GridColumn extends Column<Object, Object> {
 
     public GridColumn(GridElement gridElement) {
         this.gridElement = gridElement;
+        console.log("NEW");
 
         // Default renderer
         setRenderer((cell, data) -> {
@@ -134,13 +138,6 @@ public final class GridColumn extends Column<Object, Object> {
         JS.reassignProperties(this);
     }
 
-
-    @JsProperty
-    public void setName(String s) {
-        cname = s;
-        nameChanged(s);
-    }
-
     @JsProperty(name = "renderer")
     public JSFunction<?, JSCell> getJsRenderer() {
         return renderer;
@@ -225,6 +222,19 @@ public final class GridColumn extends Column<Object, Object> {
     public void setJsHidden(boolean b) {
         setHidden(b);
         gridElement.updateWidth();
+    }
+    
+    protected String cname;
+    
+    @JsProperty
+    public String getName() {
+        return cname;
+    }
+
+    @JsProperty
+    public void setName(String s) {
+        cname = s;
+        nameChanged(s);
     }
 
 }

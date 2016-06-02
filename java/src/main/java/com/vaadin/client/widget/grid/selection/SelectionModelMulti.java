@@ -23,6 +23,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import com.vaadin.client.data.DataSource.RowHandle;
+import com.vaadin.client.renderers.ComplexRenderer;
 import com.vaadin.client.renderers.Renderer;
 import com.vaadin.client.widgets.grid.Grid;
 
@@ -36,7 +37,7 @@ public class SelectionModelMulti<T> extends AbstractRowHandleSelectionModel<T>
         implements SelectionModel.Multi.Batched<T> {
 
     private final LinkedHashSet<RowHandle<T>> selectedRows;
-    private Renderer<Boolean> renderer;
+    private ComplexRenderer<Boolean> renderer;
     private Grid<T> grid;
 
     private boolean batchStarted = false;
@@ -59,7 +60,7 @@ public class SelectionModelMulti<T> extends AbstractRowHandleSelectionModel<T>
 
     @Override
     public Renderer<Boolean> getSelectionColumnRenderer() {
-        return renderer;
+        return renderer.renderer;
     }
 
     @Override

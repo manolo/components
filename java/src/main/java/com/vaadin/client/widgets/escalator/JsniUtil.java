@@ -9,7 +9,7 @@ import com.google.gwt.dom.client.Element;
  * The methods are moved in this class to minimize the amount of JSNI code
  * as much as feasible.
  */
-class JsniUtil {
+public class JsniUtil {
     
     public static boolean eventOnBody(Escalator escalator, JsniEvent ev) {
         return ((JsniElement)(Object)escalator.bodyElem).contains(ev.target);
